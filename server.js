@@ -181,7 +181,7 @@ app.post('/api/check-match', async (req, res) => {
 
     res.json({
       overallScore,
-      secScores,
+      sectionScores: secScores,
       insights,
       badge
     });
