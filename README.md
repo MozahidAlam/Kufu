@@ -1,4 +1,4 @@
-# KufuMatch - Islamic Compatibility Assessment
+# NikahFit - Islamic Compatibility Assessment
 
 An Islamic marriage compatibility assessment web application built with modern web technologies and deployed on Vercel.
 
@@ -141,11 +141,11 @@ vercel --prod
 ## Project Structure
 
 ```
-kufumatch/
+nikahfit/
 ├── api/
 │   ├── submit-answers.js    # Submit answers endpoint
 │   └── check-match.js       # Check compatibility endpoint
-├── kufumatch.html           # Main application
+├── index.html               # Main application
 ├── package.json             # Dependencies and scripts
 ├── vercel.json              # Vercel configuration
 └── README.md               # This file
