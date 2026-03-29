@@ -1,52 +1,96 @@
-// Vercel serverless function for checking compatibility
-const { kv } = require('@vercel/kv');
+// Netlify serverless function for checking compatibility
+const { createClient } = require('@supabase/supabase-js');
 
-module.exports = async function handler(req, res) {
+// Initialize Supabase client
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+exports.handler = async (event, context) => {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  };
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+  // Handle preflight requests
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
 
   try {
-    const { code1, code2 } = req.body;
+    const { code1, code2 } = JSON.parse(event.body);
 
     if (!code1 || !code2) {
-      return res.status(400).json({ error: 'Both codes are required' });
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Both codes are required' })
+      };
     }
 
-    // Fetch user data from Vercel KV
-    const user1Data = await kv.get(`user:${code1}`);
-    const user2Data = await kv.get(`user:${code2}`);
+    // Fetch user data from Supabase
+    const { data: user1Data, error: error1 } = await supabase
+      .from('users')
+      .select('*')
+      .eq('code', code1)
+      .single();
+
+    const { data: user2Data, error: error2 } = await supabase
+      .from('users')
+      .select('*')
+      .eq('code', code2)
+      .single();
 
     if (!user1Data || !user2Data) {
-      return res.status(404).json({ error: 'One or both codes not found' });
+      return {
+        statusCode: 404,
+        headers,
+        body: JSON.stringify({ error: 'One or both codes not found' })
+      };
     }
 
     const user1 = user1Data;
     const user2 = user2Data;
 
     if (user1.gender === user2.gender) {
-      return res.status(400).json({ error: 'Codes must be from different genders' });
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Codes must be from different genders' })
+      };
     }
 
     const compatibility = calculateCompatibility(user1.answers, user2.answers);
 
-    res.json(compatibility);
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(compatibility)
+    };
 
   } catch (error) {
     console.error('Error in check-match:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: 'Internal server error' })
+    };
   }
-}
+};
 
 // Calculate compatibility score
 function calculateCompatibility(answers1, answers2) {
