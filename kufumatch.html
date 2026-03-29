@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KufuMatch</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0a3d2e;--primary2:#1a6b4e;--gold:#c9a842;--gold2:#e8d5a0;--cream:#fdf8ee;
+  --dark:#071f18;--text:#1a2e26;--textm:#446655;--red:#c0392b;--border:#d4c98a;
+  --shadow:0 4px 20px rgba(10,61,46,0.12);--r:14px;--r2:8px;
+}
+html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,serif;background:var(--cream);color:var(--text)}
+.bn{font-family:'Noto Serif Bengali',serif}
+/* PATTERNS */
+.header-pattern{background:var(--primary);position:relative;overflow:hidden}
+.header-pattern::before{content:'';position:absolute;inset:0;background-image:
+  repeating-linear-gradient(45deg,rgba(201,168,66,.08) 0,rgba(201,168,66,.08) 1px,transparent 0,transparent 50%);
+  background-size:20px 20px}
+/* SCREENS */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;animation:fadeIn .4s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* WELCOME */
+#s-welcome{background:var(--cream)}
+.welcome-top{width:100%;padding:48px 24px 36px;display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}
+.logo-icon{width:88px;height:88px}
+.app-title{font-family:'Cinzel',serif;font-size:2.4rem;font-weight:700;color:var(--primary);letter-spacing:2px;text-align:center}
+.app-title span{color:var(--gold)}
+.tagline{font-size:1.1rem;color:var(--textm);text-align:center;max-width:340px;line-height:1.6}
+.lang-toggle{display:flex;background:white;border:1.5px solid var(--border);border-radius:40px;overflow:hidden;margin-top:8px}
+.lang-btn{padding:8px 24px;font-family:inherit;font-size:.95rem;cursor:pointer;border:none;background:transparent;color:var(--textm);transition:all .2s;font-weight:500}
+.lang-btn.active{background:var(--primary);color:white;font-weight:600}
+.welcome-decor{width:100%;max-width:480px;padding:0 24px 40px;display:flex;flex-direction:column;gap:16px}
+.feature-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)}
+.feat-icon{width:44px;height:44px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feat-icon svg{fill:var(--gold)}
+.feat-text h4{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:2px}
+.feat-text p{font-size:.85rem;color:var(--textm);line-height:1.4}
+/* BUTTONS */
+.btn-gold{display:block;width:100%;max-width:360px;padding:16px 32px;background:var(--gold);color:var(--dark);border:none;border-radius:var(--r);font-family:inherit;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-align:center}
+.btn-gold:hover{background:#b8952f;transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,66,.4)}
+.btn-gold:active{transform:translateY(0)}
+.btn-outline{display:block;width:100%;max-width:360px;padding:14px 32px;background:transparent;color:var(--primary);border:2px solid var(--primary);border-radius:var(--r);font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.btn-outline:hover{background:var(--primary);color:white}
+/* GENDER */
+#s-gender{justify-content:center}
+.gender-wrap{width:100%;max-width:480px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.section-title{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--primary);text-align:center}
+.section-sub{font-size:1rem;color:var(--textm);text-align:center}
+.gender-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%}
+.gender-card{background:white;border:2px solid var(--border);border-radius:var(--r);padding:28px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.gender-card:hover,.gender-card.selected{border-color:var(--gold);background:#fffbf0;transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,168,66,.2)}
+.gender-card svg{width:56px;height:56px}
+.gender-card h3{font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center}
+.gender-card p{font-size:.85rem;color:var(--textm);text-align:center}
+/* QUIZ */
+#s-quiz{background:var(--cream)}
+.quiz-header{width:100%;background:white;border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:10}
+.progress-bar-wrap{height:4px;background:#e8e0d0;border-radius:4px;margin-bottom:12px}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--primary2));border-radius:4px;transition:width .4s ease}
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-indicator{display:flex;align-items:center;gap:8px}
+.sect-icon{width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sect-name{font-size:.95rem;font-weight:700;color:var(--primary)}
+.sect-count{font-size:.8rem;color:var(--textm)}
+.quiz-body{width:100%;max-width:600px;padding:24px 20px 100px;display:flex;flex-direction:column;gap:20px}
+.q-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.q-num{font-size:.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.q-text{font-size:1.05rem;font-weight:600;color:var(--primary);line-height:1.5;margin-bottom:14px}
+.q-text.bn{font-size:1rem}
+.option-list{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #e8e0d0;border-radius:var(--r2);cursor:pointer;transition:all .15s;background:white}
+.opt:hover{border-color:var(--gold);background:#fffdf5}
+.opt.selected{border-color:var(--gold);background:#fffbf0}
+.opt-radio{width:18px;height:18px;border:2px solid #c0b090;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.opt.selected .opt-radio{border-color:var(--gold);background:var(--gold)}
+.opt.selected .opt-radio::after{content:'';width:7px;height:7px;border-radius:50%;background:white}
+.opt-label{font-size:.95rem;color:var(--text);line-height:1.4}
+.opt-label.bn{font-size:.9rem}
+/* TEXT INPUT */
+.text-input{width:100%;padding:12px 16px;border:1.5px solid #e8e0d0;border-radius:var(--r2);font-family:inherit;font-size:.95rem;color:var(--text);background:white;outline:none;transition:border-color .15s}
+.text-input:focus{border-color:var(--gold)}
+/* QUIZ FOOTER */
+.quiz-footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:16px 20px;display:flex;gap:12px;justify-content:center;z-index:10}
+.quiz-footer .btn-gold,.quiz-footer .btn-outline{max-width:200px}
+/* CODE SCREEN */
+#s-code{justify-content:center}
+.code-wrap{width:100%;max-width:440px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.code-box{background:white;border:2px solid var(--gold);border-radius:var(--r);padding:28px;width:100%;text-align:center;box-shadow:var(--shadow)}
+.code-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:10px}
+.code-value{font-family:'Courier New',monospace;font-size:2rem;font-weight:700;color:var(--primary);letter-spacing:4px;background:#f8f5e8;padding:12px 20px;border-radius:8px;display:inline-block;margin-bottom:8px;cursor:pointer}
+.code-hint{font-size:.85rem;color:var(--textm)}
+.divider{display:flex;align-items:center;gap:12px;width:100%;color:var(--textm);font-size:.9rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.partner-form{width:100%;display:flex;flex-direction:column;gap:12px}
+.partner-form label{font-size:.9rem;font-weight:600;color:var(--primary)}
+.msg-box{padding:14px 16px;border-radius:var(--r2);font-size:.9rem;text-align:center}
+.msg-error{background:#fef2f2;border:1px solid #f5c6c6;color:#c0392b}
+.msg-success{background:#f0faf5;border:1px solid #9fd9b8;color:#1a6b4e}
+/* RESULT */
+#s-result{background:var(--cream)}
+.result-header{width:100%;background:var(--primary);padding:36px 24px 100px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
+.result-header h2{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold2);letter-spacing:1px}
+.result-header p{font-size:.9rem;color:rgba(255,255,255,.7)}
+.score-circle-wrap{position:absolute;bottom:-60px;left:50%;transform:translateX(-50%)}
+.score-circle{width:128px;height:128px;position:relative}
+.score-circle svg{transform:rotate(-90deg)}
+.score-circle-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num{font-size:1.8rem;font-weight:700;color:var(--primary)}
+.score-pct{font-size:.75rem;color:var(--textm);font-weight:600}
+.result-body{width:100%;max-width:560px;padding:80px 20px 40px;display:flex;flex-direction:column;gap:20px}
+.result-badge{text-align:center;padding:12px;border-radius:var(--r2)}
+.badge-excellent{background:#e8f5e9;color:#1a6b4e;border:1px solid #9fd9b8}
+.badge-good{background:#fff8e1;color:#8c6a00;border:1px solid #f0d070}
+.badge-moderate{background:#fff3e0;color:#7d4e00;border:1px solid #f0c070}
+.badge-poor{background:#fef2f2;color:#c0392b;border:1px solid #f5c6c6}
+.result-badge h3{font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.result-badge p{font-size:.9rem;line-height:1.5}
+.section-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.section-card h4{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-row{margin-bottom:12px}
+.sec-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sec-row-name{font-size:.9rem;color:var(--text)}
+.sec-row-pct{font-size:.85rem;font-weight:700}
+.sec-bar-bg{height:8px;background:#f0ece0;border-radius:4px}
+.sec-bar{height:100%;border-radius:4px;transition:width 1s ease}
+.insights-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.insights-card h4{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:14px}
+.insight-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.insight-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.dot-green{background:#e8f5e9}
+.dot-amber{background:#fff8e1}
+.dot-red{background:#fef2f2}
+.insight-text{font-size:.9rem;line-height:1.5;color:var(--text)}
+.disclaimer{background:#f0f8ff;border:1px solid #b8d8f0;border-radius:var(--r2);padding:16px;font-size:.82rem;line-height:1.6;color:#2c5f8a;text-align:center;margin-top:8px}
+.restart-btn{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:0 0 40px}
+@media(max-width:420px){
+  .app-title{font-size:1.9rem}
+  .gender-cards{grid-template-columns:1fr}
+  .score-num{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div class="screen active" id="s-welcome">
+  <div class="welcome-top">
+    <svg class="logo-icon" viewBox="0 0 88 88" fill="none">
+      <circle cx="44" cy="44" r="44" fill="#0a3d2e"/>
+      <path d="M44 14C30 14 19 25 19 39c0 10 5.8 18.6 14.2 23L44 74l10.8-12c8.4-4.4 14.2-13 14.2-23C69 25 58 14 44 14z" fill="#c9a842" opacity=".18"/>
+      <path d="M55.5 32a14 14 0 0 1-7.5 2 14 14 0 1 1 7.5-2z" stroke="#c9a842" stroke-width="2" fill="none"/>
+      <path d="M58 26l1.5 3 3.5.5-2.5 2.5.6 3.5-3.1-1.6-3.1 1.6.6-3.5-2.5-2.5 3.5-.5z" fill="#c9a842"/>
+    </svg>
+    <h1 class="app-title" id="t-title">Kufu<span>Match</span></h1>
+    <p class="tagline" id="t-tagline">Islamic Compatibility Assessment for Marriage</p>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
+    </div>
+  </div>
+  <div class="welcome-decor">
+    <div class="feature-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="feat-text"><h4 id="f1t">Deen-First Matching</h4><p id="f1d">40% weight on religious practice and values</p></div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <div class="feat-text"><h4 id="f2t">Comprehensive Questions</h4><p id="f2d">60+ questions covering all aspects of life</p></div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+      <div class="feat-text"><h4 id="f3t">Private & Secure</h4><p id="f3d">Match code system keeps your data safe</p></div>
+    </div>
+    <button class="btn-gold" onclick="goTo('gender')" id="t-start" style="margin:0 auto">Begin Assessment →</button>
+    <p style="text-align:center;font-size:.82rem;color:var(--textm)" id="t-disc">For informational purposes only. Consult family and scholars.</p>
+  </div>
+</div>
+
+<!-- GENDER -->
+<div class="screen" id="s-gender">
+  <div class="gender-wrap">
+    <div style="text-align:center">
+      <div style="font-size:.8rem;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px" id="t-step1">Step 1 of 3</div>
+      <h2 class="section-title" id="t-iam">I am a...</h2>
+      <p class="section-sub" style="margin-top:6px" id="t-choose">Please select to get gender-specific questions</p>
+    </div>
+    <div class="gender-cards">
+      <div class="gender-card" id="gc-male" onclick="selectGender('male')">
+        <svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="#e8f5ee"/><path d="M28 20a6 6 0 100 12 6 6 0 000-12zM18 42c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#0a3d2e" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 18h6m0 0v6m0-6l-8 8" stroke="#c9a842" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3 id="t-groom">Groom (Male)</h3>
+        <p id="t-groom-sub">বর / পাত্র</p>
+      </div>
+      <div class="gender-card" id="gc-female" onclick="selectGender('female')">
+        <svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="#fdf0f5"/><path d="M28 18a6 6 0 100 12 6 6 0 000-12zM18 40c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#0a3d2e" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M28 34v8m-3-3h6" stroke="#c9a842" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3 id="t-bride">Bride (Female)</h3>
+        <p id="t-bride-sub">কনে / পাত্রী</p>
+      </div>
+    </div>
+    <button class="btn-gold" id="t-gnext" onclick="startQuiz()" style="margin-top:8px;opacity:.5;pointer-events:none">Continue →</button>
+    <button class="btn-outline" onclick="goTo('welcome')" id="t-back">← Back</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="s-quiz">
+  <div class="quiz-header">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="quiz-progress" style="width:5%"></div></div>
+    <div class="quiz-nav">
+      <div class="section-indicator">
+        <div class="sect-icon" id="sect-icon">🕌</div>
+        <div>
+          <div class="sect-name" id="sect-name">Deen</div>
+          <div class="sect-count" id="sect-count">Section 1 of 9</div>
+        </div>
+      </div>
+      <div style="font-size:.82rem;color:var(--textm)" id="q-counter">0/0 answered</div>
+    </div>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+  <div class="quiz-footer">
+    <button class="btn-outline" id="q-prev" onclick="quizPrev()">← <span id="t-prev-btn">Prev</span></button>
+    <button class="btn-gold" id="q-next" onclick="quizNext()"><span id="t-next-btn">Next</span> →</button>
+  </div>
+</div>
+
+<!-- CODE -->
+<div class="screen" id="s-code">
+  <div class="code-wrap">
+    <div style="text-align:center">
+      <div style="font-size:.8rem;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px" id="t-step2">Step 2 of 3</div>
+      <h2 class="section-title" id="t-your-code">Your Match Code</h2>
+      <p class="section-sub" style="margin-top:6px" id="t-code-hint">Share this code with your partner</p>
+    </div>
+    <div class="code-box">
+      <div class="code-label" id="t-mycode">MY CODE</div>
+      <div class="code-value" id="code-display" onclick="copyCode()" title="Click to copy">——</div>
+      <div class="code-hint" id="t-click-copy">Click to copy</div>
+      <button class="btn-gold" onclick="generateShareLink()" style="margin-top:12px;font-size:0.9rem;padding:10px 16px;" id="t-share-link">Generate Share Link</button>
+    </div>
+    <div class="divider" id="t-or">— OR —</div>
+    <div class="partner-form">
+      <label id="t-enter-code">Enter Partner's Code</label>
+      <input type="text" class="text-input" id="partner-code-input" placeholder="e.g. A3F8B2K9" maxlength="12" oninput="this.value=this.value.toUpperCase()">
+      <div id="code-msg"></div>
+      <button class="btn-gold" onclick="checkMatch()" id="t-check-match">Check Compatibility →</button>
+    </div>
+    <p style="font-size:.78rem;color:var(--textm);text-align:center;line-height:1.5" id="t-note">Note: Both partners must complete their questionnaire on the same device/browser for comparison.</p>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="result-header header-pattern">
+    <h2 id="t-result-title">Compatibility Result</h2>
+    <p id="t-result-sub">Based on Islamic Kafa'ah principles</p>
+    <div class="score-circle-wrap">
+      <div class="score-circle">
+        <svg width="128" height="128" viewBox="0 0 128 128">
+          <circle cx="64" cy="64" r="56" fill="white" stroke="#e8e0cc" stroke-width="8"/>
+          <circle cx="64" cy="64" r="56" fill="none" stroke="var(--gold)" stroke-width="8" stroke-dasharray="351.86" stroke-dashoffset="351.86" stroke-linecap="round" id="score-arc"/>
+        </svg>
+        <div class="score-circle-inner">
+          <div class="score-num" id="score-num">0%</div>
+          <div class="score-pct" id="t-match">Match</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="result-body">
+    <div id="result-badge" class="result-badge"></div>
+    <div class="section-card">
+      <h4 id="t-breakdown">📊 Section Breakdown</h4>
+      <div id="breakdown-bars"></div>
+    </div>
+    <div class="insights-card" id="insights-card">
+      <h4 id="t-insights">💡 Insights & Suggestions</h4>
+      <div id="insights-list"></div>
+    </div>
+    <div class="disclaimer" id="t-disclaimer">⚠️ This tool provides guidance only. Marriage is a major decision — consult your family, perform Istikhara, and seek advice from knowledgeable scholars. May Allah bless your marriage. Ameen.</div>
+    <div class="restart-btn">
+      <button class="btn-gold" onclick="location.reload()" id="t-restart" style="max-width:220px">Start New Assessment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+let lang = 'en';
+let gender = null;
+let answers = {};
+let sectionIdx = 0;
+let myCode = '';
+
+const TR = {
+en:{title:'KufuMatch',tagline:'Islamic Compatibility Assessment for Marriage',start:'Begin Assessment →',disc:'For informational purposes only. Consult family and scholars.',f1t:'Deen-First Matching',f1d:'40% weight on religious practice and values',f2t:'Comprehensive Questions',f2d:'60+ questions covering all aspects of life',f3t:'Private & Secure',f3d:'Match code system keeps your data safe',step1:'Step 1 of 3',iam:'I am a...',choose:'Please select to get gender-specific questions',groom:'Groom (Male)',groomsub:'বর / পাত্র',bride:'Bride (Female)',bridesub:'কনে / পাত্রী',gnext:'Continue →',back:'← Back',step2:'Step 2 of 3',yourcode:'Your Match Code',codehint:'Share this code with your partner',mycode:'MY CODE',clickcopy:'Click to copy ✓',sharelink:'Generate Share Link',entercode:"Enter Partner's Code",checkmatch:'Check Compatibility →',note:'Note: Share your code with your partner. They can complete their assessment on any device.',rtitle:'Compatibility Result',rsub:"Based on Islamic Kafa'ah principles",match:'Match',breakdown:'📊 Section Breakdown',insights:'💡 Insights & Suggestions',disclaimer:'⚠️ This tool provides guidance only. Marriage is a major decision — consult your family, perform Istikhara, and seek advice from knowledgeable scholars. May Allah bless your marriage. Ameen.',restart:'Start New Assessment',prev:'Prev',next:'Next',or:'— OR —',invalidCode:'Invalid code! Please check and try again.',
+secnames:{basic:'Basic Information',deen:'Deen & Religiosity',character:'Character & Personality',family:'Family Values',finance:'Financial',education:'Education & Career',relationship:'Relationship Expectations',lifestyle:'Lifestyle',redflags:'Important Factors'},
+badges:{excellent:{t:'Excellent Match! 🌙',d:'MashaAllah! You have strong compatibility across religious, personal, and lifestyle values. May Allah put barakah in your union.'},good:{t:'Good Match 💛',d:'AlHamdulillah! You share many important values. A few areas need discussion but overall a promising pairing.'},moderate:{t:'Moderate Match',d:'There are some areas of alignment and some differences. Open communication and mutual understanding will be key.'},poor:{t:'Low Compatibility',d:'Significant differences were found in key areas. Please discuss openly and consult a marriage counselor before proceeding.'}},
+excellent:'Excellent',good:'Good',needs:'Needs Work',poor:'Poor'
+},
+bn:{title:'কুফুম্যাচ',tagline:'বিবাহের জন্য ইসলামিক সামঞ্জস্য মূল্যায়ন',start:'মূল্যায়ন শুরু করুন →',disc:'শুধুমাত্র তথ্যের উদ্দেশ্যে। পরিবার ও আলেমদের পরামর্শ নিন।',f1t:'দ্বীন-প্রথম মিলন',f1d:'ধর্মীয় অনুশীলনে ৪০% গুরুত্ব',f2t:'বিস্তারিত প্রশ্নমালা',f2d:'জীবনের সব দিক কভার করে ৬০+ প্রশ্ন',f3t:'ব্যক্তিগত ও নিরাপদ',f3d:'ম্যাচ কোড সিস্টেমে তথ্য সুরক্ষিত',step1:'ধাপ ১ / ৩',iam:'আমি একজন...',choose:'লিঙ্গ-নির্দিষ্ট প্রশ্নের জন্য নির্বাচন করুন',groom:'বর (পুরুষ)',groomsub:'Groom / Male',bride:'কনে (মহিলা)',bridesub:'Bride / Female',gnext:'পরবর্তী →',back:'← পেছনে',step2:'ধাপ ২ / ৩',yourcode:'আপনার ম্যাচ কোড',codehint:'এই কোডটি আপনার পার্টনারের সাথে শেয়ার করুন',mycode:'আমার কোড',clickcopy:'কপি করতে ক্লিক করুন ✓',sharelink:'শেয়ার লিঙ্ক তৈরি করুন',entercode:'পার্টনারের কোড দিন',checkmatch:'সামঞ্জস্য দেখুন →',note:'দ্রষ্টব্য: আপনার কোডটি পার্টনারের সাথে শেয়ার করুন। তারা যেকোনো ডিভাইসে তাদের মূল্যায়ন সম্পূর্ণ করতে পারেন।',rtitle:'সামঞ্জস্যের ফলাফল',rsub:"ইসলামিক কুফু নীতির ভিত্তিতে",match:'মিল',breakdown:'📊 বিভাগ ভিত্তিক ফলাফল',insights:'💡 পরামর্শ ও পর্যালোচনা',disclaimer:'⚠️ এই টুলটি শুধুমাত্র গাইডলাইন প্রদান করে। বিবাহ একটি গুরুত্বপূর্ণ সিদ্ধান্ত — পরিবারের পরামর্শ নিন, ইস্তিখারা করুন এবং আলেমদের সাথে কথা বলুন। আল্লাহ আপনাদের বিবাহে বরকত দিন। আমীন।',restart:'নতুন মূল্যায়ন শুরু করুন',prev:'পূর্বে',next:'পরবর্তী',or:'— অথবা —',invalidCode:'অবৈধ কোড! পুনরায় চেষ্টা করুন।',
+secnames:{basic:'মৌলিক তথ্য',deen:'দ্বীন ও ধর্মীয়তা',character:'চরিত্র ও ব্যক্তিত্ব',family:'পারিবারিক মূল্যবোধ',finance:'আর্থিক অবস্থা',education:'শিক্ষা ও পেশা',relationship:'সম্পর্কের প্রত্যাশা',lifestyle:'জীবনধারা',redflags:'গুরুত্বপূর্ণ বিষয়'},
+badges:{excellent:{t:'অসাধারণ মিল! 🌙',d:'মাশাআল্লাহ! ধর্মীয়, ব্যক্তিগত এবং জীবনযাত্রার মূল্যবোধে চমৎকার সামঞ্জস্য। আল্লাহ এই মিলনে বরকত দিন।'},good:{t:'ভালো মিল 💛',d:'আলহামদুলিল্লাহ! অনেক গুরুত্বপূর্ণ মূল্যবোধ মিলে যায়। কিছু বিষয় আলোচনা করলে আরও ভালো হবে।'},moderate:{t:'মাঝারি মিল',d:'কিছু বিষয়ে মিল আছে, কিছু বিষয়ে পার্থক্য। খোলামেলা যোগাযোগ ও পারস্পরিক বোঝাপড়া জরুরি।'},poor:{t:'কম সামঞ্জস্য',d:'গুরুত্বপূর্ণ বিষয়গুলোতে উল্লেখযোগ্য পার্থক্য পাওয়া গেছে। এগিয়ে যাওয়ার আগে খোলামেলা আলোচনা করুন।'}},
+excellent:'চমৎকার',good:'ভালো',needs:'উন্নতি দরকার',poor:'কম'
+}
+};
+
+const SECTIONS = [
+  {id:'basic',icon:'👤',w:0},
+  {id:'deen',icon:'🕌',w:40},
+  {id:'character',icon:'💎',w:20},
+  {id:'family',icon:'🏠',w:15},
+  {id:'finance',icon:'💰',w:10},
+  {id:'education',icon:'🎓',w:5},
+  {id:'relationship',icon:'❤️',w:5},
+  {id:'lifestyle',icon:'🌿',w:5},
+  {id:'redflags',icon:'⚠️',w:0}
+];
+
+// All questions
+const QS = [
+// BASIC
+{id:'name',s:'basic',g:'both',t:{en:'Your Full Name',bn:'আপনার পুরো নাম'},type:'text'},
+{id:'age',s:'basic',g:'both',t:{en:'Your Age',bn:'আপনার বয়স'},type:'number'},
+{id:'height',s:'basic',g:'both',t:{en:'Height (cm)',bn:'উচ্চতা (সেমি)'},type:'number'},
+{id:'edu',s:'basic',g:'both',t:{en:'Education Level',bn:'শিক্ষাগত যোগ্যতা'},type:'single',
+ opts:[{v:'ssc',en:'SSC or below',bn:'এসএসসি বা নিচে',sc:1},{v:'hsc',en:'HSC',bn:'এইচএসসি',sc:2},{v:'diploma',en:'Diploma',bn:'ডিপ্লোমা',sc:2},{v:'bach',en:"Bachelor's",bn:'স্নাতক',sc:3},{v:'master',en:"Master's or above",bn:'স্নাতকোত্তর বা উপরে',sc:4}]},
+{id:'occ',s:'basic',g:'both',t:{en:'Occupation / Profession',bn:'পেশা'},type:'text'},
+{id:'loc',s:'basic',g:'both',t:{en:'City / District',bn:'শহর / জেলা'},type:'text'},
+{id:'marital',s:'basic',g:'both',t:{en:'Marital Status',bn:'বৈবাহিক অবস্থা'},type:'single',
+ opts:[{v:'s',en:'Single (Never Married)',bn:'অবিবাহিত',sc:3},{v:'d',en:'Divorced',bn:'তালাকপ্রাপ্ত',sc:2},{v:'w',en:'Widowed',bn:'বিধবা/বিপত্নীক',sc:2}]},
+
+// DEEN
+{id:'salah',s:'deen',g:'both',t:{en:'How regularly do you perform Salah (5 daily prayers)?',bn:'আপনি কতটা নিয়মিত ৫ ওয়াক্ত নামাজ পড়েন?'},type:'single',
+ opts:[{v:'a',en:'All 5 times daily without fail',bn:'প্রতিদিন ৫ ওয়াক্ত — কখনো ছাড়ি না',sc:4},{v:'b',en:'Mostly 5 times (rarely miss)',bn:'বেশিরভাগ ৫ ওয়াক্ত — খুব কম ছাড়ি',sc:3},{v:'c',en:'Some prayers regularly',bn:'কিছু ওয়াক্ত নিয়মিত',sc:2},{v:'d',en:'Only Jummah / Eid',bn:'শুধু জুমা / ঈদ',sc:1},{v:'e',en:'Rarely / Not at all',bn:'খুব কম / একদম না',sc:0}]},
+{id:'fasting',s:'deen',g:'both',t:{en:'Do you observe Ramadan fasting?',bn:'আপনি কি রমজানে রোজা রাখেন?'},type:'single',
+ opts:[{v:'a',en:'All 29-30 fasts',bn:'সব ২৯-৩০টি রোজা',sc:4},{v:'b',en:'Most fasts',bn:'বেশিরভাগ রোজা',sc:3},{v:'c',en:'Some fasts',bn:'কিছু রোজা',sc:2},{v:'d',en:'Rarely',bn:'খুব কম',sc:1}]},
+{id:'quran',s:'deen',g:'both',t:{en:'How regularly do you recite the Quran?',bn:'কতটা নিয়মিত কুরআন তেলাওয়াত করেন?'},type:'single',
+ opts:[{v:'a',en:'Daily (even a few verses)',bn:'প্রতিদিন (কয়েক আয়াত হলেও)',sc:4},{v:'b',en:'Several times a week',bn:'সপ্তাহে কয়েকবার',sc:3},{v:'c',en:'Occasionally',bn:'মাঝে মাঝে',sc:2},{v:'d',en:'Rarely',bn:'খুব কম',sc:1}]},
+{id:'dress_m',s:'deen',g:'male',t:{en:'Do you follow Islamic dress code (cover awrah, avoid tight/revealing clothes)?',bn:'আপনি কি ইসলামিক পোশাকবিধি মেনে চলেন?'},type:'single',
+ opts:[{v:'a',en:'Yes, strictly always',bn:'হ্যাঁ, সবসময় কঠোরভাবে',sc:4},{v:'b',en:'Mostly yes',bn:'বেশিরভাগ সময় হ্যাঁ',sc:3},{v:'c',en:'Sometimes',bn:'মাঝে মাঝে',sc:2},{v:'d',en:'Not really',bn:'তেমন না',sc:1}]},
+{id:'hijab',s:'deen',g:'female',t:{en:'Do you observe Hijab / Islamic dress code (purdah)?',bn:'আপনি কি হিজাব / পর্দা পালন করেন?'},type:'single',
+ opts:[{v:'a',en:'Full purdah strictly',bn:'পূর্ণ পর্দা কঠোরভাবে',sc:4},{v:'b',en:'Regular hijab',bn:'নিয়মিত হিজাব',sc:3},{v:'c',en:'Partial / trying',bn:'আংশিক / চেষ্টা করছি',sc:2},{v:'d',en:'Not observing currently',bn:'এখন পালন করি না',sc:1}]},
+{id:'deen_imp',s:'deen',g:'both',t:{en:'How important is Deen in your life?',bn:'আপনার জীবনে দ্বীন কতটা গুরুত্বপূর্ণ?'},type:'single',
+ opts:[{v:'a',en:'Highest priority — guides every decision',bn:'সর্বোচ্চ — প্রতিটি সিদ্ধান্ত পরিচালিত করে',sc:4},{v:'b',en:'Very important',bn:'অনেক গুরুত্বপূর্ণ',sc:3},{v:'c',en:'Moderately important',bn:'মোটামুটি গুরুত্বপূর্ণ',sc:2},{v:'d',en:'Not a major priority',bn:'প্রধান অগ্রাধিকার নয়',sc:1}]},
+{id:'spouse_deen',s:'deen',g:'both',t:{en:'What do you expect from your spouse regarding Deen?',bn:'জীবনসঙ্গীর দ্বীন সম্পর্কে আপনার প্রত্যাশা?'},type:'single',
+ opts:[{v:'a',en:'Must be very practicing',bn:'অবশ্যই অনেক আমলদার',sc:4},{v:'b',en:'Should be practicing',bn:'আমলদার হওয়া উচিত',sc:3},{v:'c',en:'Moderately religious is fine',bn:'মোটামুটি ধার্মিক হলেই চলবে',sc:2},{v:'d',en:'No strong expectation',bn:'বিশেষ প্রত্যাশা নেই',sc:1}]},
+{id:'haram',s:'deen',g:'both',t:{en:'How conscious are you about avoiding Haram (forbidden things)?',bn:'হারাম থেকে বিরত থাকার ব্যাপারে কতটা সচেতন?'},type:'single',
+ opts:[{v:'a',en:'Very strict — avoid all haram',bn:'অনেক কঠোর — সব হারাম এড়াই',sc:4},{v:'b',en:'Mostly conscious',bn:'বেশিরভাগ সচেতন',sc:3},{v:'c',en:'Somewhat conscious',bn:'কিছুটা সচেতন',sc:2},{v:'d',en:'Not very strict',bn:'বিশেষ কঠোর নই',sc:1}]},
+{id:'islamic_know',s:'deen',g:'both',t:{en:'How is your Islamic knowledge (Fiqh, Quran, Hadith)?',bn:'আপনার ইসলামিক জ্ঞান কেমন (ফিকহ, কুরআন, হাদিস)?'},type:'single',
+ opts:[{v:'a',en:'Good — regularly study Islam',bn:'ভালো — নিয়মিত ইসলাম চর্চা করি',sc:4},{v:'b',en:'Moderate',bn:'মোটামুটি',sc:3},{v:'c',en:'Basic knowledge',bn:'মৌলিক জ্ঞান',sc:2},{v:'d',en:'Minimal',bn:'সামান্য',sc:1}]},
+
+// CHARACTER
+{id:'anger',s:'character',g:'both',t:{en:'How do you handle anger?',bn:'আপনি রাগ কীভাবে নিয়ন্ত্রণ করেন?'},type:'single',
+ opts:[{v:'a',en:'Very controlled — calm down quickly',bn:'অনেক নিয়ন্ত্রিত — দ্রুত শান্ত হই',sc:4},{v:'b',en:'Mostly controlled',bn:'বেশিরভাগ নিয়ন্ত্রিত',sc:3},{v:'c',en:'Sometimes lose control',bn:'মাঝে মাঝে নিয়ন্ত্রণ হারাই',sc:2},{v:'d',en:'Often gets intense',bn:'প্রায়ই তীব্র হয়ে যায়',sc:1}]},
+{id:'honesty',s:'character',g:'both',t:{en:'How honest are you in difficult situations?',bn:'কঠিন পরিস্থিতিতে আপনি কতটা সৎ?'},type:'single',
+ opts:[{v:'a',en:'Always honest, even if painful',bn:'সবসময় সৎ, কষ্টদায়ক হলেও',sc:4},{v:'b',en:'Mostly honest',bn:'বেশিরভাগ সৎ',sc:3},{v:'c',en:'Sometimes avoid hard truths',bn:'মাঝে মাঝে কঠিন সত্য এড়াই',sc:2},{v:'d',en:'Prefer white lies to avoid conflict',bn:'দ্বন্দ্ব এড়াতে ছোট মিথ্যা বলি',sc:1}]},
+{id:'patience',s:'character',g:'both',t:{en:'How patient are you in conflicts?',bn:'দ্বন্দ্বে আপনি কতটা ধৈর্যশীল?'},type:'single',
+ opts:[{v:'a',en:'Very patient',bn:'অনেক ধৈর্যশীল',sc:4},{v:'b',en:'Moderately patient',bn:'মোটামুটি ধৈর্যশীল',sc:3},{v:'c',en:'Sometimes impatient',bn:'মাঝে মাঝে অধৈর্য',sc:2},{v:'d',en:'Often impatient',bn:'প্রায়ই অধৈর্য',sc:1}]},
+{id:'decision',s:'character',g:'both',t:{en:'Your decision-making style in marriage?',bn:'বিবাহে সিদ্ধান্ত নেওয়ার ধরন?'},type:'single',
+ opts:[{v:'a',en:'Joint decisions always',bn:'সবসময় যৌথ সিদ্ধান্ত',sc:4},{v:'b',en:'Consult then decide together',bn:'পরামর্শ করে একসাথে সিদ্ধান্ত',sc:4},{v:'c',en:'Mostly individual',bn:'বেশিরভাগ ব্যক্তিগতভাবে',sc:2},{v:'d',en:'Family decides',bn:'পরিবার সিদ্ধান্ত নেয়',sc:2}]},
+{id:'forgiveness',s:'character',g:'both',t:{en:'How easily do you forgive others?',bn:'আপনি কতটা সহজে অন্যদের ক্ষমা করেন?'},type:'single',
+ opts:[{v:'a',en:'Easily forgive and move on',bn:'সহজে ক্ষমা করি এবং এগিয়ে যাই',sc:4},{v:'b',en:'Forgive but takes time',bn:'ক্ষমা করি তবে সময় লাগে',sc:3},{v:'c',en:'Difficult to forgive',bn:'ক্ষমা করা কঠিন',sc:2},{v:'d',en:'Rarely forgive fully',bn:'সম্পূর্ণ ক্ষমা করি খুব কম',sc:1}]},
+{id:'empathy',s:'character',g:'both',t:{en:'How empathetic are you toward others feelings?',bn:'অন্যের অনুভূতির প্রতি আপনি কতটা সহানুভূতিশীল?'},type:'single',
+ opts:[{v:'a',en:'Highly empathetic',bn:'অনেক বেশি সহানুভূতিশীল',sc:4},{v:'b',en:'Moderately empathetic',bn:'মোটামুটি সহানুভূতিশীল',sc:3},{v:'c',en:'Sometimes',bn:'মাঝে মাঝে',sc:2},{v:'d',en:'Not very empathetic',bn:'বিশেষ সহানুভূতিশীল নই',sc:1}]},
+{id:'personality',s:'character',g:'both',t:{en:'Your personality type?',bn:'আপনার ব্যক্তিত্ব কেমন?'},type:'single',
+ opts:[{v:'a',en:'Very extroverted',bn:'অনেক বহির্মুখী',sc:3},{v:'b',en:'Balanced (Ambivert)',bn:'মিশ্র (অ্যাম্বিভার্ট)',sc:4},{v:'c',en:'Mostly introverted',bn:'বেশিরভাগ অন্তর্মুখী',sc:3},{v:'d',en:'Very introverted',bn:'অনেক অন্তর্মুখী',sc:2}]},
+{id:'ego',s:'character',g:'both',t:{en:'Can you accept being wrong and apologize?',bn:'আপনি কি নিজের ভুল স্বীকার করে ক্ষমা চাইতে পারেন?'},type:'single',
+ opts:[{v:'a',en:'Yes, easily and willingly',bn:'হ্যাঁ, সহজে এবং স্বেচ্ছায়',sc:4},{v:'b',en:'Yes, but takes some courage',bn:'হ্যাঁ, তবে একটু কঠিন',sc:3},{v:'c',en:'Rarely — hard for me',bn:'কমই — আমার জন্য কঠিন',sc:2},{v:'d',en:'Almost never',bn:'প্রায় কখনো না',sc:1}]},
+
+// FAMILY
+{id:'fam_sys',s:'family',g:'both',t:{en:'Preferred family system after marriage?',bn:'বিয়ের পর পছন্দের পারিবারিক ব্যবস্থা?'},type:'single',
+ opts:[{v:'a',en:'Joint family',bn:'যৌথ পরিবার',sc:3},{v:'b',en:'Nuclear family',bn:'একক পরিবার',sc:3},{v:'c',en:'Near parents but separate home',bn:'বাবা-মার কাছে কিন্তু আলাদা বাড়ি',sc:4},{v:'d',en:'Flexible — situation-dependent',bn:'নমনীয় — পরিস্থিতি অনুযায়ী',sc:4}]},
+{id:'inlaws',s:'family',g:'both',t:{en:'Your sense of responsibility toward in-laws?',bn:'শ্বশুর-শাশুড়ির প্রতি দায়িত্ববোধ?'},type:'single',
+ opts:[{v:'a',en:'High — they are my family',bn:'অনেক — তারাও আমার পরিবার',sc:4},{v:'b',en:'Respectful with boundaries',bn:'সম্মানজনক কিন্তু সীমানা সহ',sc:3},{v:'c',en:'Moderate',bn:'মাঝারি',sc:2},{v:'d',en:'Minimal — spouse comes first',bn:'কম — সঙ্গী সবসময় আগে',sc:1}]},
+{id:'fam_role',s:'family',g:'both',t:{en:'Role of family in your major decisions?',bn:'গুরুত্বপূর্ণ সিদ্ধান্তে পরিবারের ভূমিকা?'},type:'single',
+ opts:[{v:'a',en:'High — family opinion is paramount',bn:'অনেক — পরিবারের মত সর্বোচ্চ',sc:3},{v:'b',en:'Moderate — consult then decide',bn:'মাঝারি — পরামর্শ নিয়ে নিজে সিদ্ধান্ত',sc:4},{v:'c',en:'Low — mostly independent',bn:'কম — বেশিরভাগ স্বাধীন',sc:2}]},
+{id:'children',s:'family',g:'both',t:{en:'How many children do you prefer?',bn:'আপনি কতজন সন্তান চান?'},type:'single',
+ opts:[{v:'a',en:'1–2 children',bn:'১–২ সন্তান',sc:3},{v:'b',en:'3–4 children',bn:'৩–৪ সন্তান',sc:3},{v:'c',en:'4+ (large family)',bn:'৪+ (বড় পরিবার)',sc:2},{v:'d',en:'Allah decides / no preference',bn:'আল্লাহ নির্ধারণ করবেন / কোনো পছন্দ নেই',sc:4}]},
+{id:'parenting',s:'family',g:'both',t:{en:'How do you want to raise children?',bn:'সন্তান কীভাবে মানুষ করতে চান?'},type:'single',
+ opts:[{v:'a',en:'Islamic values + modern education',bn:'ইসলামিক মূল্যবোধ + আধুনিক শিক্ষা',sc:4},{v:'b',en:'Strictly Islamic environment',bn:'সম্পূর্ণ ইসলামিক পরিবেশে',sc:3},{v:'c',en:'Modern with some Islamic values',bn:'আধুনিক পদ্ধতিতে কিছু ইসলামিক মূল্যবোধ',sc:3},{v:'d',en:'Let them choose as they grow',bn:'বড় হলে তারাই বেছে নেবে',sc:1}]},
+{id:'parents_care',s:'family',g:'both',t:{en:'Are you willing to take care of your parents in old age?',bn:'বৃদ্ধ বয়সে নিজের বাবা-মার সেবা করতে প্রস্তুত?'},type:'single',
+ opts:[{v:'a',en:'Absolutely — Islamic duty',bn:'অবশ্যই — ইসলামিক দায়িত্ব',sc:4},{v:'b',en:'Yes, will do my best',bn:'হ্যাঁ, সাধ্যমতো করব',sc:3},{v:'c',en:'Depends on circumstances',bn:'পরিস্থিতির উপর নির্ভর করে',sc:2},{v:'d',en:'Prefer to keep separate',bn:'আলাদা রাখতে পছন্দ',sc:1}]},
+{id:'family_planning',s:'family',g:'both',t:{en:'Importance of family planning (Tarbiyah)?',bn:'পরিবার পরিকল্পনা ও তারবিয়াহর গুরুত্ব?'},type:'single',
+ opts:[{v:'a',en:'Very important — planned approach',bn:'অনেক গুরুত্বপূর্ণ — পরিকল্পিতভাবে',sc:4},{v:'b',en:'Important',bn:'গুরুত্বপূর্ণ',sc:3},{v:'c',en:'Moderate',bn:'মাঝারি',sc:2},{v:'d',en:'Not a priority',bn:'প্রাধান্য নয়',sc:1}]},
+
+// FINANCE - MALE
+{id:'income',s:'finance',g:'male',t:{en:'Your monthly income (BDT)?',bn:'আপনার মাসিক আয় (টাকা)?'},type:'single',
+ opts:[{v:'a',en:'Less than 15,000',bn:'১৫,০০০ এর কম',sc:1},{v:'b',en:'15,000 – 30,000',bn:'১৫,০০০ – ৩০,০০০',sc:2},{v:'c',en:'30,000 – 60,000',bn:'৩০,০০০ – ৬০,০০০',sc:3},{v:'d',en:'60,000 – 1,00,000',bn:'৬০,০০০ – ১,০০,০০০',sc:4},{v:'e',en:'1,00,000+',bn:'১,০০,০০০+',sc:5}]},
+{id:'stability',s:'finance',g:'male',t:{en:'Your financial stability?',bn:'আপনার আর্থিক স্থিতিশীলতা?'},type:'single',
+ opts:[{v:'a',en:'Stable — fixed income / business',bn:'স্থিতিশীল — নির্দিষ্ট আয় / ব্যবসা',sc:4},{v:'b',en:'Moderately stable',bn:'মোটামুটি স্থিতিশীল',sc:3},{v:'c',en:'Currently building',bn:'এখন গড়ে তুলছি',sc:2},{v:'d',en:'Unstable / irregular',bn:'অস্থিতিশীল / অনিয়মিত',sc:1}]},
+{id:'expenses',s:'finance',g:'male',t:{en:'Can you fully bear family expenses?',bn:'পারিবারিক সম্পূর্ণ খরচ বহন করতে পারবেন?'},type:'single',
+ opts:[{v:'a',en:'Yes, fully capable',bn:'হ্যাঁ, সম্পূর্ণভাবে সক্ষম',sc:4},{v:'b',en:'Mostly — wife can contribute if willing',bn:'বেশিরভাগ — স্ত্রী ইচ্ছায় সহযোগিতা করতে পারে',sc:3},{v:'c',en:'Need shared income',bn:'যৌথ আয়ের প্রয়োজন',sc:2},{v:'d',en:'Still growing financially',bn:'আর্থিকভাবে এখনো বাড়ছি',sc:1}]},
+{id:'savings_m',s:'finance',g:'male',t:{en:'Do you have savings or assets?',bn:'আপনার কি সঞ্চয় বা সম্পদ আছে?'},type:'single',
+ opts:[{v:'a',en:'Significant savings + property',bn:'উল্লেখযোগ্য সঞ্চয় + সম্পত্তি',sc:4},{v:'b',en:'Some savings',bn:'কিছু সঞ্চয়',sc:3},{v:'c',en:'Minimal savings',bn:'সামান্য সঞ্চয়',sc:2},{v:'d',en:'No savings currently',bn:'এখন কোনো সঞ্চয় নেই',sc:1}]},
+{id:'debt_m',s:'finance',g:'male',t:{en:'Do you have significant debts or loans?',bn:'কি উল্লেখযোগ্য ঋণ বা লোন আছে?'},type:'single',
+ opts:[{v:'a',en:'No debts at all',bn:'কোনো ঋণ নেই',sc:4},{v:'b',en:'Small manageable debt',bn:'ছোট নিয়ন্ত্রণযোগ্য ঋণ',sc:3},{v:'c',en:'Significant debt repaying',bn:'উল্লেখযোগ্য ঋণ পরিশোধ হচ্ছে',sc:2},{v:'d',en:'Heavy debt burden',bn:'ভারী ঋণের বোঝা',sc:1}]},
+
+// FINANCE - FEMALE
+{id:'fam_finance',s:'finance',g:'female',t:{en:"Your family's financial status?",bn:'আপনার পরিবারের আর্থিক অবস্থা?'},type:'single',
+ opts:[{v:'a',en:'Lower class',bn:'নিম্নবিত্ত',sc:1},{v:'b',en:'Lower middle class',bn:'নিম্ন মধ্যবিত্ত',sc:2},{v:'c',en:'Middle class',bn:'মধ্যবিত্ত',sc:3},{v:'d',en:'Upper middle class',bn:'উচ্চ মধ্যবিত্ত',sc:4},{v:'e',en:'Upper class / wealthy',bn:'উচ্চবিত্ত / ধনী',sc:5}]},
+{id:'income_exp',s:'finance',g:'female',t:{en:"Income expectation from husband?",bn:'স্বামীর আয়ের ব্যাপারে প্রত্যাশা?'},type:'single',
+ opts:[{v:'a',en:'High — comfortable lifestyle essential',bn:'বেশি — আরামদায়ক জীবন জরুরি',sc:2},{v:'b',en:'Moderate — enough for family',bn:'মাঝারি — পরিবারের জন্য যথেষ্ট',sc:4},{v:'c',en:'Basic needs covered is fine',bn:'মৌলিক চাহিদা পূরণ হলেই চলবে',sc:3},{v:'d',en:'I can also contribute financially',bn:'আমিও আর্থিকভাবে সহযোগিতা করব',sc:4}]},
+{id:'mahr',s:'finance',g:'female',t:{en:"Mahr expectation?",bn:'মোহরানার প্রত্যাশা?'},type:'single',
+ opts:[{v:'a',en:'Symbolic amount (Islamic spirit)',bn:'প্রতীকী পরিমাণ (ইসলামিক চেতনায়)',sc:4},{v:'b',en:'Moderate and reasonable',bn:'মাঝারি ও যুক্তিসংগত',sc:3},{v:'c',en:'Substantial amount',bn:'উল্লেখযোগ্য পরিমাণ',sc:2},{v:'d',en:'Open to discussion',bn:'আলোচনার জন্য উন্মুক্ত',sc:4}]},
+{id:'savings_f',s:'finance',g:'female',t:{en:'Do you have personal savings or assets?',bn:'আপনার ব্যক্তিগত সঞ্চয় বা সম্পদ আছে?'},type:'single',
+ opts:[{v:'a',en:'Yes — significant',bn:'হ্যাঁ — উল্লেখযোগ্য',sc:4},{v:'b',en:'Some savings',bn:'কিছু সঞ্চয়',sc:3},{v:'c',en:'Minimal',bn:'সামান্য',sc:2},{v:'d',en:'No personal savings',bn:'ব্যক্তিগত সঞ্চয় নেই',sc:1}]},
+
+// EDUCATION & CAREER
+{id:'career_goal',s:'education',g:'both',t:{en:'Your career goals?',bn:'আপনার পেশাদার লক্ষ্য?'},type:'single',
+ opts:[{v:'a',en:'High ambition — senior position / own business',bn:'উচ্চ উচ্চাকাঙ্ক্ষা — উচ্চপদ / নিজস্ব ব্যবসা',sc:3},{v:'b',en:'Stable career with work-life balance',bn:'কাজ-জীবন ভারসাম্য সহ স্থিতিশীল পেশা',sc:4},{v:'c',en:'Family first — career secondary',bn:'পরিবার আগে — পেশা পরে',sc:3},{v:'d',en:'Focus on home and family',bn:'ঘর ও পরিবারে মনোযোগ',sc:2}]},
+{id:'work_after_f',s:'education',g:'female',t:{en:'Do you plan to work after marriage?',bn:'বিয়ের পর কাজ/ব্যবসার পরিকল্পনা আছে?'},type:'single',
+ opts:[{v:'a',en:'Yes — continue career definitely',bn:'হ্যাঁ — পেশা অবশ্যই চালিয়ে যাব',sc:3},{v:'b',en:'Yes — if husband agrees',bn:'হ্যাঁ — স্বামী রাজি হলে',sc:4},{v:'c',en:'Prefer to stay home',bn:'ঘরে থাকতে পছন্দ করব',sc:3},{v:'d',en:'Work from home only',bn:'শুধু বাড়ি থেকে কাজ',sc:3},{v:'e',en:'Open to both',bn:'উভয়ের জন্য উন্মুক্ত',sc:4}]},
+{id:'wife_work_m',s:'education',g:'male',t:{en:"Your preference for wife's career after marriage?",bn:'বিয়ের পর স্ত্রীর পেশা সম্পর্কে পছন্দ?'},type:'single',
+ opts:[{v:'a',en:'Prefer wife to stay home',bn:'স্ত্রী ঘরে থাকুক পছন্দ',sc:2},{v:'b',en:'Her choice — fully supportive',bn:'তার পছন্দ — সম্পূর্ণ সহযোগী',sc:4},{v:'c',en:'Want her to work and contribute',bn:'চাই সে কাজ করুক এবং সহযোগিতা করুক',sc:3},{v:'d',en:'Flexible based on family needs',bn:'পারিবারিক প্রয়োজনে নমনীয়',sc:4}]},
+{id:'edu_pref',s:'education',g:'both',t:{en:'Preferred education level for your spouse?',bn:'জীবনসঙ্গীর শিক্ষাগত যোগ্যতার পছন্দ?'},type:'single',
+ opts:[{v:'a',en:'Must be highly educated (Masters+)',bn:'অবশ্যই উচ্চশিক্ষিত (স্নাতকোত্তর+)',sc:2},{v:'b',en:'Graduate level or above',bn:'স্নাতক বা উপরে',sc:3},{v:'c',en:'Educated enough for household',bn:'সংসারের জন্য যথেষ্ট শিক্ষিত',sc:3},{v:'d',en:'Education level not a major factor',bn:'শিক্ষার স্তর বড় বিষয় নয়',sc:2}]},
+
+// RELATIONSHIP
+{id:'most_imp',s:'relationship',g:'both',t:{en:'Most important factor in a successful marriage?',bn:'সফল বিবাহের সবচেয়ে গুরুত্বপূর্ণ উপাদান?'},type:'single',
+ opts:[{v:'a',en:'Deen and Taqwa above all',bn:'সর্বোপরি দ্বীন ও তাকওয়া',sc:4},{v:'b',en:'Mutual love and respect',bn:'পারস্পরিক ভালোবাসা ও সম্মান',sc:4},{v:'c',en:'Financial security',bn:'আর্থিক নিরাপত্তা',sc:2},{v:'d',en:'Family acceptance and harmony',bn:'পারিবারিক গ্রহণযোগ্যতা ও সম্প্রীতি',sc:3},{v:'e',en:'All of the above equally',bn:'সবকটি সমানভাবে',sc:4}]},
+{id:'conflict_res',s:'relationship',g:'both',t:{en:'How do you resolve conflicts in relationships?',bn:'সম্পর্কে দ্বন্দ্ব কীভাবে সমাধান করেন?'},type:'single',
+ opts:[{v:'a',en:'Calm discussion immediately',bn:'শান্তভাবে তাৎক্ষণিক আলোচনা',sc:4},{v:'b',en:'Give time then talk calmly',bn:'সময় দিয়ে শান্তভাবে কথা বলি',sc:3},{v:'c',en:'Involve trusted family / counselor',bn:'বিশ্বস্ত পরিবার / পরামর্শদাতাকে যুক্ত করি',sc:3},{v:'d',en:'Avoid conflict / silent treatment',bn:'দ্বন্দ্ব এড়াই / নীরব থাকি',sc:1}]},
+{id:'communication',s:'relationship',g:'both',t:{en:'Preferred communication style in marriage?',bn:'বিবাহে পছন্দের যোগাযোগ ধরন?'},type:'single',
+ opts:[{v:'a',en:'Very open — share everything',bn:'অনেক খোলামেলা — সবকিছু শেয়ার করি',sc:4},{v:'b',en:'Moderate — share important things',bn:'মাঝারি — গুরুত্বপূর্ণ বিষয় শেয়ার',sc:3},{v:'c',en:'Selective — some privacy',bn:'বাছাই করা — কিছু ব্যক্তিগত',sc:2}]},
+{id:'romance',s:'relationship',g:'both',t:{en:'Importance of affection and romance in marriage?',bn:'বিবাহে স্নেহ ও ভালোবাসার গুরুত্ব?'},type:'single',
+ opts:[{v:'a',en:'Very important — actively express love',bn:'অনেক গুরুত্বপূর্ণ — সক্রিয়ভাবে ভালোবাসা প্রকাশ করি',sc:3},{v:'b',en:'Important but not dominant',bn:'গুরুত্বপূর্ণ কিন্তু প্রধান নয়',sc:4},{v:'c',en:'Moderate',bn:'মাঝারি',sc:3},{v:'d',en:'Actions over words',bn:'কথার চেয়ে কাজে বিশ্বাসী',sc:2}]},
+{id:'quality_time',s:'relationship',g:'both',t:{en:'How much quality time should couples spend together?',bn:'দম্পতির কতটা মানসম্পন্ন সময় একসাথে কাটানো উচিত?'},type:'single',
+ opts:[{v:'a',en:'As much as possible',bn:'যতটা সম্ভব',sc:3},{v:'b',en:'Several quality hours daily',bn:'প্রতিদিন কয়েক ঘণ্টা মানসম্পন্ন সময়',sc:4},{v:'c',en:'Quality over quantity',bn:'পরিমাণের চেয়ে মান বেশি গুরুত্বপূর্ণ',sc:3},{v:'d',en:'Individual space is important',bn:'ব্যক্তিগত স্থান গুরুত্বপূর্ণ',sc:2}]},
+{id:'respect_spouse',s:'relationship',g:'both',t:{en:'How do you view the Islamic roles of husband and wife?',bn:'স্বামী-স্ত্রীর ইসলামিক ভূমিকা সম্পর্কে আপনার দৃষ্টিভঙ্গি?'},type:'single',
+ opts:[{v:'a',en:'Follow Islamic roles strictly',bn:'ইসলামিক ভূমিকা কঠোরভাবে পালন করি',sc:4},{v:'b',en:'Follow Islamic roles with flexibility',bn:'নমনীয়তার সাথে ইসলামিক ভূমিকা',sc:4},{v:'c',en:'Equal partnership in everything',bn:'সবকিছুতে সমান অংশীদারিত্ব',sc:2},{v:'d',en:'Roles depend on the couple',bn:'ভূমিকা দম্পতির উপর নির্ভর করে',sc:3}]},
+
+// LIFESTYLE
+{id:'social_media',s:'lifestyle',g:'both',t:{en:'Your social media usage?',bn:'আপনার সোশ্যাল মিডিয়া ব্যবহার?'},type:'single',
+ opts:[{v:'a',en:'Very heavy — hours daily',bn:'অনেক বেশি — প্রতিদিন ঘণ্টার পর ঘণ্টা',sc:1},{v:'b',en:'Moderate — 1-2 hours daily',bn:'মাঝারি — প্রতিদিন ১-২ ঘণ্টা',sc:3},{v:'c',en:'Minimal — only when necessary',bn:'কম — শুধু প্রয়োজনে',sc:4},{v:'d',en:'Rarely use social media',bn:'সোশ্যাল মিডিয়া খুব কম ব্যবহার',sc:4}]},
+{id:'entertainment',s:'lifestyle',g:'both',t:{en:'Entertainment preferences?',bn:'বিনোদনের পছন্দ?'},type:'single',
+ opts:[{v:'a',en:'Islamic content, Quran, lectures',bn:'ইসলামিক কন্টেন্ট, কুরআন, লেকচার',sc:4},{v:'b',en:'Educational documentaries & books',bn:'শিক্ষামূলক ডকুমেন্টারি ও বই',sc:3},{v:'c',en:'Mix of halal entertainment',bn:'হালাল বিনোদনের মিশ্রণ',sc:2},{v:'d',en:'Movies, music, dramas freely',bn:'মুভি, মিউজিক, নাটক স্বাধীনভাবে',sc:1}]},
+{id:'travel',s:'lifestyle',g:'both',t:{en:'Travel preferences?',bn:'ভ্রমণের পছন্দ?'},type:'single',
+ opts:[{v:'a',en:'Love traveling — frequent domestic/international',bn:'ভ্রমণ ভালোবাসি — ঘন ঘন দেশে-বিদেশে',sc:3},{v:'b',en:'Occasional family trips',bn:'মাঝে মাঝে পারিবারিক সফর',sc:4},{v:'c',en:'Prefer religious travel (Hajj, Umrah)',bn:'ধর্মীয় সফর পছন্দ (হজ, উমরা)',sc:4},{v:'d',en:'Prefer staying home',bn:'ঘরে থাকতে পছন্দ',sc:2}]},
+{id:'routine',s:'lifestyle',g:'both',t:{en:'Your daily routine style?',bn:'আপনার দৈনন্দিন রুটিন?'},type:'single',
+ opts:[{v:'a',en:'Highly structured and disciplined',bn:'অনেক নিয়মতান্ত্রিক ও শৃঙ্খলাবদ্ধ',sc:4},{v:'b',en:'Moderately structured',bn:'মোটামুটি নিয়মতান্ত্রিক',sc:3},{v:'c',en:'Flexible — adapts to situation',bn:'নমনীয় — পরিস্থিতি অনুযায়ী',sc:2},{v:'d',en:'No fixed routine',bn:'কোনো নির্দিষ্ট রুটিন নেই',sc:1}]},
+{id:'diet',s:'lifestyle',g:'both',t:{en:'Dietary habits?',bn:'খাদ্যাভ্যাস?'},type:'single',
+ opts:[{v:'a',en:'Strictly halal only',bn:'শুধুমাত্র হালাল',sc:4},{v:'b',en:'Halal but not always strict',bn:'হালাল কিন্তু সবসময় কঠোর নই',sc:3},{v:'c',en:'Not strict about halal',bn:'হালাল নিয়ে কঠোর নই',sc:1}]},
+{id:'finance_mgmt',s:'lifestyle',g:'both',t:{en:'How do you manage personal finances?',bn:'ব্যক্তিগত অর্থ কীভাবে পরিচালনা করেন?'},type:'single',
+ opts:[{v:'a',en:'Very disciplined — save and plan',bn:'অনেক শৃঙ্খলাবদ্ধ — সঞ্চয় ও পরিকল্পনা করি',sc:4},{v:'b',en:'Mostly disciplined',bn:'বেশিরভাগ শৃঙ্খলাবদ্ধ',sc:3},{v:'c',en:'Moderate — sometimes overspend',bn:'মাঝারি — মাঝে মাঝে বেশি খরচ',sc:2},{v:'d',en:'Not very disciplined',bn:'বিশেষ শৃঙ্খলাবদ্ধ নই',sc:1}]},
+{id:'health_lifestyle',s:'lifestyle',g:'both',t:{en:'How do you take care of your health?',bn:'আপনি কিভাবে স্বাস্থ্যের যত্ন নেন?'},type:'single',
+ opts:[{v:'a',en:'Very conscious — exercise, good diet',bn:'অনেক সচেতন — ব্যায়াম, ভালো খাবার',sc:4},{v:'b',en:'Moderately health-conscious',bn:'মোটামুটি স্বাস্থ্য সচেতন',sc:3},{v:'c',en:'Not very concerned',bn:'বিশেষ উদ্বিগ্ন নই',sc:2}]},
+
+// RED FLAGS
+{id:'smoking',s:'redflags',g:'both',t:{en:'Do you smoke or use tobacco?',bn:'আপনি কি ধূমপান বা তামাক ব্যবহার করেন?'},type:'single',
+ opts:[{v:'a',en:'No — never',bn:'না — কখনো না',sc:4},{v:'b',en:'Quit — trying to stop',bn:'ছেড়ে দিয়েছি / চেষ্টা করছি',sc:2},{v:'c',en:'Occasionally',bn:'মাঝে মাঝে',sc:1},{v:'d',en:'Yes, regularly',bn:'হ্যাঁ, নিয়মিত',sc:0}]},
+{id:'addiction',s:'redflags',g:'both',t:{en:'Any addiction issues (drugs, gambling, etc.)?',bn:'কোনো আসক্তির সমস্যা (মাদক, জুয়া ইত্যাদি)?'},type:'single',
+ opts:[{v:'a',en:'Absolutely not',bn:'একদমই না',sc:4},{v:'b',en:'Recovered from past issues',bn:'অতীতের সমস্যা থেকে সুস্থ হয়েছি',sc:2},{v:'c',en:'Minor issues',bn:'সামান্য সমস্যা',sc:1}]},
+{id:'health_cond',s:'redflags',g:'both',t:{en:'Any major health conditions?',bn:'কোনো বড় স্বাস্থ্য সমস্যা?'},type:'single',
+ opts:[{v:'a',en:'Alhamdulillah — healthy',bn:'আলহামদুলিল্লাহ — সুস্থ',sc:4},{v:'b',en:'Minor manageable conditions',bn:'সামান্য নিয়ন্ত্রণযোগ্য সমস্যা',sc:3},{v:'c',en:'Chronic but managed',bn:'দীর্ঘস্থায়ী কিন্তু নিয়ন্ত্রিত',sc:2},{v:'d',en:'Serious health condition',bn:'গুরুতর স্বাস্থ্য সমস্যা',sc:1}]},
+{id:'past_rel',s:'redflags',g:'both',t:{en:'Previous relationship history?',bn:'পূর্বের সম্পর্কের ইতিহাস?'},type:'single',
+ opts:[{v:'a',en:'No relationships before marriage',bn:'বিয়ের আগে কোনো সম্পর্ক নেই',sc:4},{v:'b',en:'Past but sincerely repented',bn:'অতীতে ছিল কিন্তু আন্তরিকভাবে তওবা',sc:3},{v:'c',en:'Prefer not to disclose',bn:'প্রকাশ করতে পছন্দ করি না',sc:1}]},
+{id:'commitment',s:'redflags',g:'both',t:{en:'Your commitment level to marriage?',bn:'বিবাহের প্রতি আপনার প্রতিশ্রুতি?'},type:'single',
+ opts:[{v:'a',en:'Lifelong — divorce is absolute last resort',bn:'আজীবনের — তালাক একেবারে শেষ পথ',sc:4},{v:'b',en:'Very strong commitment',bn:'অনেক শক্তিশালী প্রতিশ্রুতি',sc:3},{v:'c',en:'Committed but separation is possible',bn:'প্রতিশ্রুতিবদ্ধ কিন্তু বিচ্ছেদ সম্ভব',sc:2}]},
+{id:'domestic',s:'redflags',g:'both',t:{en:'Do you believe in harsh treatment of spouse?',bn:'আপনি কি জীবনসঙ্গীর সাথে কঠোর আচরণে বিশ্বাস করেন?'},type:'single',
+ opts:[{v:'a',en:'Never — kindness always',bn:'কখনো না — সবসময় সদয়তা',sc:4},{v:'b',en:'Sometimes stern but never harmful',bn:'মাঝে মাঝে কঠোর কিন্তু কখনো ক্ষতিকর নয়',sc:3},{v:'c',en:'Strong authority needed',bn:'শক্তিশালী কর্তৃত্ব প্রয়োজন',sc:1}]},
+{id:'mismatch_tol',s:'redflags',g:'both',t:{en:'Tolerance for religious practice differences with spouse?',bn:'জীবনসঙ্গীর ধর্মীয় পার্থক্যের সহনশীলতা?'},type:'single',
+ opts:[{v:'a',en:'Low — must be same practice level',bn:'কম — অবশ্যই একই মাত্রার আমলদার',sc:3},{v:'b',en:'Moderate — willing to guide/grow together',bn:'মাঝারি — একসাথে গাইড করতে/বাড়তে ইচ্ছুক',sc:4},{v:'c',en:'High — religion is personal',bn:'বেশি — ধর্ম সম্পূর্ণ ব্যক্তিগত',sc:1}]}
+];
+
+// Section weights for scoring
+const SEC_WEIGHTS = {basic:0,deen:40,character:20,family:15,finance:10,education:5,relationship:5,lifestyle:5,redflags:0};
+
+// ===== STATE =====
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`).classList.add('active');
+  document.documentElement.lang=l;
+  applyTranslations();
+  if(document.getElementById('s-quiz').classList.contains('active')) renderQuiz();
+}
+
+function applyTranslations(){
+  const t=TR[lang];
+  const setT=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
+  setT('t-title',t.title); setT('t-tagline',t.tagline); setT('t-start',t.start);
+  setT('t-disc',t.disc); setT('f1t',t.f1t); setT('f1d',t.f1d); setT('f2t',t.f2t);
+  setT('f2d',t.f2d); setT('f3t',t.f3t); setT('f3d',t.f3d);
+  setT('t-step1',t.step1); setT('t-iam',t.iam); setT('t-choose',t.choose);
+  setT('t-groom',t.groom); setT('t-groom-sub',t.groomsub);
+  setT('t-bride',t.bride); setT('t-bride-sub',t.bridesub);
+  setT('t-gnext',t.gnext); setT('t-back',t.back);
+  setT('t-step2',t.step2); setT('t-your-code',t.yourcode); setT('t-code-hint',t.codehint);
+  setT('t-mycode',t.mycode); setT('t-click-copy',t.clickcopy); setT('t-share-link',t.sharelink);
+  setT('t-enter-code',t.entercode); setT('t-check-match',t.checkmatch);
+  setT('t-note',t.note); setT('t-or',t.or);
+  setT('t-result-title',t.rtitle); setT('t-result-sub',t.rsub);
+  setT('t-match',t.match); setT('t-breakdown',t.breakdown);
+  setT('t-insights',t.insights); setT('t-disclaimer',t.disclaimer);
+  setT('t-restart',t.restart); setT('t-prev-btn',t.prev); setT('t-next-btn',t.next);
+}
+
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none'});
+  const el=document.getElementById('s-'+screen);
+  el.style.display='flex';
+  setTimeout(()=>el.classList.add('active'),10);
+}
+
+function selectGender(g){
+  gender=g;
+  document.getElementById('gc-male').classList.toggle('selected',g==='male');
+  document.getElementById('gc-female').classList.toggle('selected',g==='female');
+  const btn=document.getElementById('t-gnext');
+  btn.style.opacity='1'; btn.style.pointerEvents='auto';
+}
+
+function startQuiz(){
+  if(!gender)return;
+  sectionIdx=0; answers={};
+  goTo('quiz');
+  renderQuiz();
+}
+
+function getUserQs(){ return QS.filter(q=>q.g==='both'||q.g===gender); }
+function getSectionQs(secId){ return getUserQs().filter(q=>q.s===secId); }
+
+function renderQuiz(){
+  const secId=SECTIONS[sectionIdx].id;
+  const secIcon=SECTIONS[sectionIdx].icon;
+  const secQs=getSectionQs(secId);
+  const t=TR[lang];
+
+  document.getElementById('sect-icon').textContent=secIcon;
+  document.getElementById('sect-name').textContent=t.secnames[secId]||secId;
+  document.getElementById('sect-count').textContent=`Section ${sectionIdx+1} of ${SECTIONS.length}`;
+
+  const progress=Math.round(((sectionIdx+1)/SECTIONS.length)*100);
+  document.getElementById('quiz-progress').style.width=progress+'%';
+
+  const answered=secQs.filter(q=>answers[q.id]!==undefined).length;
+  document.getElementById('q-counter').textContent=`${answered}/${secQs.length} answered`;
+
+  document.getElementById('q-prev').style.opacity=sectionIdx===0?'0.4':'1';
+  document.getElementById('q-prev').style.pointerEvents=sectionIdx===0?'none':'auto';
+
+  const nextLabel=sectionIdx===SECTIONS.length-1?(lang==='bn'?'জমা দিন':'Submit'):(t.next+' →');
+  document.getElementById('t-next-btn').textContent=nextLabel.replace(' →','');
+
+  const body=document.getElementById('quiz-body');
+  body.innerHTML='';
+
+  if(secQs.length===0){
+    body.innerHTML=`<div style="padding:40px;text-align:center;color:var(--textm)">No questions for this section.</div>`;
+    return;
+  }
+
+  secQs.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='q-card';
+    const qLabel=lang==='bn'?q.t.bn:q.t.en;
+    const isBn=lang==='bn';
+    let html=`<div class="q-num">Q${i+1}</div><div class="q-text${isBn?' bn':''}">${qLabel}</div>`;
+
+    if(q.type==='text'||q.type==='number'){
+      const val=answers[q.id]||'';
+      let inputAttrs = '';
+      if(q.type==='number'){
+        if(q.id==='age'){
+          inputAttrs=' min="18" max="100"';
+        } else if(q.id==='height'){
+          inputAttrs=' min="100" max="250"';
+        }
+      }
+      html+=`<input class="text-input${isBn?' bn':''}" type="${q.type==='number'?'number':'text'}" id="qi-${q.id}" value="${val}" placeholder="${isBn?'এখানে লিখুন...':'Type here...'}"${inputAttrs} oninput="answers['${q.id}']=this.value;updateCounter()">`;
+    } else {
+      html+=`<div class="option-list">`;
+      (q.opts||[]).forEach(opt=>{
+        const sel=answers[q.id]===opt.v;
+        const oLabel=lang==='bn'?opt.bn:opt.en;
+        html+=`<div class="opt${sel?' selected':''}" onclick="selectOpt('${q.id}','${opt.v}',this)">
+          <div class="opt-radio"></div>
+          <div class="opt-label${isBn?' bn':''}">${oLabel}</div>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+
+    div.innerHTML=html;
+    body.appendChild(div);
+  });
+
+  body.scrollTop=0;
+  window.scrollTo(0,0);
+}
+
+function selectOpt(qid,val,el){
+  answers[qid]=val;
+  const card=el.closest('.q-card');
+  card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  updateCounter();
+}
+
+function updateCounter(){
+  const secId=SECTIONS[sectionIdx].id;
+  const secQs=getSectionQs(secId);
+  const answered=secQs.filter(q=>answers[q.id]!==undefined).length;
+  document.getElementById('q-counter').textContent=`${answered}/${secQs.length} answered`;
+}
+
+function quizPrev(){
+  if(sectionIdx>0){sectionIdx--;renderQuiz();}
+}
+
+function quizNext(){
+  if(sectionIdx<SECTIONS.length-1){sectionIdx++;renderQuiz();}
+  else{finishQuiz();}
+}
+
+function finishQuiz(){
+  // Validate age and height before submitting
+  if(answers.age){
+    const age=parseInt(answers.age);
+    if(isNaN(age)||age<18||age>100){
+      alert(lang==='bn'?'বয়স ১৮ থেকে ১০০ এর মধ্যে হতে হবে':'Age must be between 18 and 100');
+      return;
+    }
+  }
+  if(answers.height){
+    const height=parseInt(answers.height);
+    if(isNaN(height)||height<100||height>250){
+      alert(lang==='bn'?'উচ্চতা ১০০ থেকে ২৫০ সেমি এর মধ্যে হতে হবে':'Height must be between 100 and 250 cm');
+      return;
+    }
+  }
+  
+  // Submit answers to server
+  fetch('/api/submit-answers', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({gender, answers: {...answers, gender}})
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.error){
+      alert('Error: ' + data.error);
+      return;
+    }
+    myCode = data.code;
+    document.getElementById('code-display').textContent = myCode;
+    goTo('code');
+  })
+  .catch(err => {
+    alert('Failed to submit answers. Please try again.');
+    console.error(err);
+  });
+}
+
+function generateCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c='';
+  for(let i=0;i<8;i++)c+=chars[Math.floor(Math.random()*chars.length)];
+  return c;
+}
+
+function copyCode(){
+  if(!myCode)return;
+  navigator.clipboard.writeText(myCode).then(()=>{
+    const el=document.getElementById('t-click-copy');
+    const orig=el.textContent;
+    el.textContent=lang==='bn'?'কপি হয়েছে ✓':'Copied ✓';
+    setTimeout(()=>{el.textContent=orig;},2000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const ta=document.createElement('textarea');
+    ta.value=myCode;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const el=document.getElementById('t-click-copy');
+    const orig=el.textContent;
+    el.textContent=lang==='bn'?'কপি হয়েছে ✓':'Copied ✓';
+    setTimeout(()=>{el.textContent=orig;},2000);
+  });
+}
+
+function generateShareLink(){
+  const url = window.location.origin + '?partner=' + myCode;
+  navigator.clipboard.writeText(url).then(()=>{
+    alert(lang === 'bn' ? 'শেয়ার লিঙ্ক কপি হয়েছে!' : 'Share link copied to clipboard!');
+  }).catch(()=>{
+    // Fallback for older browsers
+    const ta=document.createElement('textarea');
+    ta.value=url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(lang === 'bn' ? 'শেয়ার লিঙ্ক কপি হয়েছে!' : 'Share link copied to clipboard!');
+  });
+}
+
+function checkMatch(){
+  const partnerCode=document.getElementById('partner-code-input').value.trim().toUpperCase();
+  const msgEl=document.getElementById('code-msg');
+  if(!partnerCode){msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'কোড দিন':'Please enter a code'}</div>`;return;}
+  if(!myCode){msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'প্রথমে আপনার মূল্যায়ন সম্পূর্ণ করুন':'Complete your assessment first'}</div>`;return;}
+
+  msgEl.innerHTML=`<div class="msg-box msg-success">${lang==='bn'?'চেক করা হচ্ছে...':'Checking...'}</div>`;
+
+  fetch('/api/check-match', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({code1: myCode, code2: partnerCode})
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.error){
+      msgEl.innerHTML=`<div class="msg-box msg-error">${data.error}</div>`;
+      return;
+    }
+    // Show result using server data
+    showResultFromServer(data);
+  })
+  .catch(err => {
+    msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'ত্রুটি ঘটেছে':'An error occurred'}</div>`;
+    console.error(err);
+  });
+}
+
+function showResultFromServer(data){
+  const t=TR[lang];
+  const overall = data.overallScore;
+  const secScores = data.sectionScores;
+  const insights = data.insights;
+  const badge = data.badge;
+
+  goTo('result');
+
+  setTimeout(()=>{
+    // Animate score
+    const arc=document.getElementById('score-arc');
+    const numEl=document.getElementById('score-num');
+    const circumference=2*Math.PI*56;
+    const offset=circumference-(circumference*overall/100);
+    arc.style.transition='stroke-dashoffset 1.5s ease';
+    arc.style.strokeDashoffset=offset;
+    arc.style.stroke=overall>=75?'#2ecc71':overall>=50?'#c9a842':'#e74c3c';
+
+    let cur=0;
+    const timer=setInterval(()=>{cur+=2;numEl.textContent=cur+'%';if(cur>=overall)clearInterval(timer);},30);
+
+    // Badge
+    let badgeCls = overall >= 80 ? 'badge-excellent' : overall >= 60 ? 'badge-good' : overall >= 40 ? 'badge-moderate' : 'badge-poor';
+    document.getElementById('result-badge').className=`result-badge ${badgeCls}`;
+    document.getElementById('result-badge').innerHTML=`<h3>${badge.title}</h3><p>${badge.desc}</p>`;
+
+    // Breakdown bars
+    const barsEl=document.getElementById('breakdown-bars');
+    barsEl.innerHTML='';
+    const scoredSections = ['deen', 'character', 'family', 'finance', 'education', 'relationship', 'lifestyle'];
+    scoredSections.forEach(secId => {
+      const sc = secScores[secId] || 50;
+      const color = sc >= 75 ? '#2ecc71' : sc >= 50 ? '#c9a842' : '#e74c3c';
+      const label = sc >= 75 ? t.excellent : sc >= 50 ? t.good : t.needs;
+      const secName = t.secnames[secId] || secId;
+      const icon = SECTIONS.find(s => s.id === secId)?.icon || '📊';
+      const row=document.createElement('div');
+      row.className='sec-row';
+      row.innerHTML=`<div class="sec-row-head">
+        <span class="sec-row-name">${icon} ${secName}</span>
+        <span class="sec-row-pct" style="color:${color}">${sc}% — ${label}</span>
+      </div>
+      <div class="sec-bar-bg"><div class="sec-bar" id="bar-${secId}" style="width:0;background:${color}"></div></div>`;
+      barsEl.appendChild(row);
+      setTimeout(()=>{document.getElementById('bar-'+secId).style.width=sc+'%';},200);
+    });
+
+    // Insights
+    const il=document.getElementById('insights-list');
+    il.innerHTML=insights.map(i=>`<div class="insight-item"><div class="insight-dot dot-${i.type}">${i.type==='positive'?'✓':i.type==='warning'?'!':'→'}</div><div class="insight-text">${i.text}</div></div>`).join('');
+  },300);
+}
+
+// Init
+applyTranslations();
+const urlParams = new URLSearchParams(window.location.search);
+const partnerCode = urlParams.get('partner');
+if(partnerCode){
+  document.getElementById('partner-code-input').value = partnerCode;
+}
+</script>
+</body>
+</html>
