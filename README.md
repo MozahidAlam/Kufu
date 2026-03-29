@@ -1,6 +1,6 @@
 # NikahFit - Islamic Compatibility Assessment
 
-An Islamic marriage compatibility assessment web application built with modern web technologies and deployed on Vercel.
+An Islamic marriage compatibility assessment web application built with modern web technologies and deployed on Netlify.
 
 ## Features
 
@@ -9,14 +9,14 @@ An Islamic marriage compatibility assessment web application built with modern w
 - **Shareable Codes**: Generate unique codes to share with potential partners
 - **Compatibility Analysis**: Detailed scoring and insights based on Islamic principles
 - **Responsive Design**: Works on all devices
-- **Serverless Deployment**: Deployed on Vercel with Vercel KV for data storage
+- **Serverless Deployment**: Deployed on Netlify with Supabase for data storage
 
 ## Tech Stack
 
 - **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Vercel Serverless Functions (Node.js)
-- **Database**: Vercel KV (Redis-compatible key-value store)
-- **Deployment**: Vercel
+- **Backend**: Netlify Serverless Functions (Node.js)
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Netlify
 
 ## Local Development
 
@@ -29,52 +29,57 @@ An Islamic marriage compatibility assessment web application built with modern w
    ```bash
    npm run dev
    ```
-4. Open `http://localhost:3000`
+4. Open `http://localhost:3001`
 
-## Vercel Deployment
+## Netlify Deployment
 
 ### Prerequisites
 
-1. **Vercel Account**: Sign up at [vercel.com](https://vercel.com)
-2. **Vercel KV Database**: Set up Vercel KV for data storage
+1. **Netlify Account**: Sign up at [netlify.com](https://netlify.com)
+2. **Supabase Account**: Sign up at [supabase.com](https://supabase.com)
 
 ### Quick Deployment Steps
 
-1. **Install Vercel CLI**:
+1. **Install Netlify CLI**:
    ```bash
-   npm install -g vercel
+   npm install -g netlify-cli
    ```
 
-2. **Login to Vercel**:
+2. **Login to Netlify**:
    ```bash
-   vercel login
+   netlify login
    ```
 
-3. **Deploy directly** (Vercel will guide you):
+3. **Deploy directly** (Netlify will guide you):
    ```bash
-   vercel
+   netlify deploy
    ```
    - Follow the prompts
-   - Vercel will automatically detect your project settings
+   - Netlify will automatically detect your project settings
 
-4. **Set up Vercel KV Database**:
-   ```bash
-   vercel kv create
-   ```
-   - Choose a name for your database
-   - Select your Vercel project
+4. **Set up Supabase Database**:
+   - Create a new project in Supabase
+   - Create a `users` table with the following schema:
+     ```sql
+     CREATE TABLE users (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       code VARCHAR(12) UNIQUE NOT NULL,
+       gender ENUM('male', 'female') NOT NULL,
+       answers JSON NOT NULL,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+     );
+     ```
 
 5. **Add Environment Variables**:
-   After KV is created, add these environment variables in your Vercel dashboard:
-   - `KV_URL`
-   - `KV_REST_API_TOKEN`
-   - `KV_REST_API_READ_ONLY_TOKEN`
+   After setting up Supabase, add these environment variables in your Netlify dashboard:
+   - `SUPABASE_URL`: Your Supabase project URL
+   - `SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
-   Get these values from your Vercel KV dashboard under the "Settings" tab.
+   Get these values from your Supabase dashboard under Settings > API.
 
 6. **Redeploy**:
    ```bash
-   vercel --prod
+   netlify deploy --prod
    ```
 
 ### Manual Setup (Alternative)
@@ -83,24 +88,18 @@ If you prefer manual setup:
 
 1. **Link your project**:
    ```bash
-   vercel link
+   netlify link
    ```
 
-2. **Create KV database**:
+2. **Set environment variables**:
    ```bash
-   vercel kv create
+   netlify env:set SUPABASE_URL your-supabase-url
+   netlify env:set SUPABASE_ANON_KEY your-supabase-anon-key
    ```
 
-3. **Set environment variables**:
+3. **Deploy**:
    ```bash
-   vercel env add KV_URL
-   vercel env add KV_REST_API_TOKEN
-   vercel env add KV_REST_API_READ_ONLY_TOKEN
-   ```
-
-4. **Deploy**:
-   ```bash
-   vercel --prod
+   netlify deploy --prod
    ```
 
 ### Troubleshooting
@@ -108,30 +107,24 @@ If you prefer manual setup:
 **"Serverless Function has crashed" Error:**
 
 This usually means:
-1. **Missing Environment Variables**: Make sure all KV environment variables are set
-2. **KV Database Not Created**: Ensure you've created a Vercel KV database
-3. **Wrong Tokens**: Double-check the KV tokens in your environment variables
+1. **Missing Environment Variables**: Make sure all Supabase environment variables are set
+2. **Supabase Table Not Created**: Ensure you've created the `users` table in Supabase
+3. **Wrong Credentials**: Double-check the Supabase URL and anon key in your environment variables
 
 **To check your environment variables:**
 ```bash
-vercel env ls
-```
-
-**To check your KV database:**
-```bash
-vercel kv ls
+netlify env:list
 ```
 
 **To redeploy after fixing issues:**
 ```bash
-vercel --prod
+netlify deploy --prod
 ```
 
 ### Environment Variables Required
 
-- `KV_URL`: Your Vercel KV database URL
-- `KV_REST_API_TOKEN`: Your KV REST API token (read/write)
-- `KV_REST_API_READ_ONLY_TOKEN`: Your KV read-only token
+- `SUPABASE_URL`: Your Supabase project URL
+- `SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
 ## API Endpoints
 
@@ -142,13 +135,15 @@ vercel --prod
 
 ```
 nikahfit/
-├── api/
-│   ├── submit-answers.js    # Submit answers endpoint
-│   └── check-match.js       # Check compatibility endpoint
-├── index.html               # Main application
-├── package.json             # Dependencies and scripts
-├── vercel.json              # Vercel configuration
-└── README.md               # This file
+├── netlify/
+│   └── functions/
+│       ├── submit-answers.js    # Submit answers endpoint
+│       └── check-match.js       # Check compatibility endpoint
+├── index.html                   # Main application
+├── server.js                    # Local development server
+├── package.json                 # Dependencies and scripts
+├── netlify.toml                 # Netlify configuration
+└── README.md                    # This file
 ```
 
 ## Compatibility Scoring
@@ -178,21 +173,3 @@ ISC License - See package.json for details.
 ## Author
 
 Mozahid Alam
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  code VARCHAR(12) UNIQUE NOT NULL,
-  gender ENUM('male', 'female') NOT NULL,
-  answers JSON NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## Technologies Used
-
-- Frontend: HTML, CSS, JavaScript
-- Backend: Node.js, Express.js
-- Database: SQLite
-
-## License
-
-ISC
