@@ -1,5 +1,6 @@
 // Vercel serverless function for checking compatibility
-const { createClient } = require('@vercel/kv');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = async function handler(req, res) {
   // Enable CORS
@@ -23,23 +24,25 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Both codes are required' });
     }
 
-    const kv = createClient({
-      url: process.env.KV_URL,
-      token: process.env.KV_REST_API_TOKEN,
-    });
+    // Local storage file
+    const dataFile = path.join(process.cwd(), 'data.json');
+
+    // Load existing data
+    let data = {};
+    if (fs.existsSync(dataFile)) {
+      data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+    }
 
     // Fetch user data
-    const [user1Data, user2Data] = await Promise.all([
-      kv.get(`user:${code1}`),
-      kv.get(`user:${code2}`)
-    ]);
+    const user1Data = data[`user:${code1}`];
+    const user2Data = data[`user:${code2}`];
 
     if (!user1Data || !user2Data) {
       return res.status(404).json({ error: 'One or both codes not found' });
     }
 
-    const user1 = JSON.parse(user1Data);
-    const user2 = JSON.parse(user2Data);
+    const user1 = user1Data;
+    const user2 = user2Data;
 
     if (user1.gender === user2.gender) {
       return res.status(400).json({ error: 'Codes must be from different genders' });

@@ -1,5 +1,6 @@
 // Vercel serverless function for submitting answers
-const { createClient } = require('@vercel/kv');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = async function handler(req, res) {
   // Enable CORS
@@ -50,17 +51,20 @@ module.exports = async function handler(req, res) {
       return code;
     };
 
-    const kv = createClient({
-      url: process.env.KV_URL,
-      token: process.env.KV_REST_API_TOKEN,
-    });
+    // Local storage file
+    const dataFile = path.join(process.cwd(), 'data.json');
+
+    // Load existing data
+    let data = {};
+    if (fs.existsSync(dataFile)) {
+      data = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+    }
 
     const tryInsert = async () => {
       code = generateUniqueCode();
 
       // Check if code already exists
-      const existing = await kv.get(`user:${code}`);
-      if (existing) {
+      if (data[`user:${code}`]) {
         if (attempts < maxAttempts) {
           attempts++;
           return tryInsert();
@@ -70,11 +74,14 @@ module.exports = async function handler(req, res) {
       }
 
       // Store user data
-      await kv.set(`user:${code}`, JSON.stringify({
+      data[`user:${code}`] = {
         gender,
         answers,
         created_at: new Date().toISOString()
-      }));
+      };
+
+      // Save to file
+      fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
 
       return code;
     };
