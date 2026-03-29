@@ -51,8 +51,8 @@ module.exports = async function handler(req, res) {
       return code;
     };
 
-    // Local storage file
-    const dataFile = path.join(process.cwd(), 'data.json');
+    // Local storage file (use /tmp for Vercel serverless)
+    const dataFile = path.join('/tmp', 'data.json');
 
     // Load existing data
     let data = {};

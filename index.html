@@ -25,17 +25,17 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 /* WELCOME */
 #s-welcome{background:var(--cream)}
-.welcome-top{width:100%;padding:48px 24px 36px;display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}
-.logo-icon{width:88px;height:88px}
-.app-title{font-family:'Cinzel',serif;font-size:2.4rem;font-weight:700;color:var(--primary);letter-spacing:2px;text-align:center}
+.welcome-top{width:100%;padding:36px 24px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;position:relative}
+.logo-icon{width:72px;height:72px}
+.app-title{font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--primary);letter-spacing:2px;text-align:center}
 .app-title span{color:var(--gold)}
-.tagline{font-size:1.1rem;color:var(--textm);text-align:center;max-width:340px;line-height:1.6}
-.lang-toggle{display:flex;background:white;border:1.5px solid var(--border);border-radius:40px;overflow:hidden;margin-top:8px}
-.lang-btn{padding:8px 24px;font-family:inherit;font-size:.95rem;cursor:pointer;border:none;background:transparent;color:var(--textm);transition:all .2s;font-weight:500}
-.lang-btn.active{background:var(--primary);color:white;font-weight:600}
-.lang-toggle-fixed{position:fixed;bottom:20px;left:20px;z-index:1000;display:flex;background:white;border:1.5px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:var(--shadow)}
-.lang-toggle-fixed .lang-btn{padding:6px 16px;font-size:.85rem}
-.welcome-decor{width:100%;max-width:480px;padding:0 24px 40px;display:flex;flex-direction:column;gap:16px}
+.tagline{font-size:1rem;color:var(--textm);text-align:center;max-width:340px;line-height:1.5}
+.lang-toggle{display:flex;background:white;border:1.5px solid var(--border);border-radius:40px;overflow:hidden;margin-top:4px;align-items:center}
+.lang-btn{padding:6px 20px;font-family:inherit;font-size:.9rem;cursor:pointer;border:none;background:transparent;color:var(--textm);transition:all .2s;font-weight:500;display:flex;align-items:center;gap:6px}
+.lang-btn.active{background:var(--primary);color:white;font-weight:600}.lang-icon{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+.lang-toggle-fixed{position:fixed;top:20px;right:20px;z-index:1000;display:flex;background:white;border:1.5px solid var(--border);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);align-items:center}
+.lang-toggle-fixed .lang-btn{padding:4px 12px;font-size:.75rem;display:flex;align-items:center;gap:4px}
+.welcome-decor{width:100%;max-width:480px;padding:0 24px 24px;display:flex;flex-direction:column;gap:12px}
 .feature-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow)}
 .feat-icon{width:44px;height:44px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .feat-icon svg{fill:var(--gold)}
@@ -48,7 +48,7 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 .about-section p:last-of-type{margin-bottom:0}
 .about-section strong{color:var(--primary)}
 /* BUTTONS */
-.btn-gold{display:block;width:100%;max-width:360px;padding:16px 32px;background:var(--gold);color:var(--dark);border:none;border-radius:var(--r);font-family:inherit;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-align:center}
+.btn-gold{display:block;width:100%;max-width:360px;padding:14px 28px;background:var(--gold);color:var(--dark);border:none;border-radius:var(--r);font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-align:center}
 .btn-gold:hover{background:#b8952f;transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,66,.4)}
 .btn-gold:active{transform:translateY(0)}
 .btn-outline{display:block;width:100%;max-width:360px;padding:14px 32px;background:transparent;color:var(--primary);border:2px solid var(--primary);border-radius:var(--r);font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
@@ -146,7 +146,7 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 .disclaimer{background:#f0f8ff;border:1px solid #b8d8f0;border-radius:var(--r2);padding:16px;font-size:.82rem;line-height:1.6;color:#2c5f8a;text-align:center;margin-top:8px}
 .restart-btn{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:0 0 40px}
 @media(max-width:420px){
-  .app-title{font-size:1.9rem}
+  .app-title{font-size:1.6rem}
   .gender-cards{grid-template-columns:1fr}
   .score-num{font-size:1.5rem}
 }
@@ -166,27 +166,22 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
     <h1 class="app-title" id="t-title">Kufu<span>Match</span></h1>
     <p class="tagline" id="t-tagline">Islamic Compatibility Assessment for Marriage</p>
     <div class="lang-toggle">
-      <button class="lang-btn active" onclick="setLang('en')">English</button>
-      <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
+      <button class="lang-btn active" onclick="setLang('en')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>English</button>
+      <button class="lang-btn" onclick="setLang('bn')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>বাংলা</button>
     </div>
   </div>
   <div class="welcome-decor">
-    <div class="about-section">
-      <h3 id="t-about-title">About NikahFit</h3>
-      <p id="t-about-content">NikahFit is an Islamic marriage compatibility assessment tool designed to help Muslims find suitable life partners based on Islamic principles of Kafa'ah (compatibility). Our comprehensive questionnaire evaluates compatibility across eight key areas: Deen & Religiosity, Character & Personality, Family Values, Financial Status, Education & Career, Relationship Expectations, Lifestyle, and Important Factors.</p>
-      <p id="t-about-content2">We prioritize Islamic values with 40% weight given to religious practice and beliefs, ensuring that faith remains the foundation of every match. The assessment is completely private - no personal information is stored, only anonymous compatibility codes are used for matching.</p>
-      <p id="t-about-content3"><strong>Remember:</strong> This tool provides guidance only. Marriage is a sacred bond in Islam. Always consult your family, perform Istikhara prayer, and seek advice from knowledgeable scholars before making any decisions.</p>
-    </div>
+    <p style="text-align:center;font-size:.9rem;color:var(--text);line-height:1.5;margin-bottom:16px" id="t-about-content">Assess your marriage compatibility based on Islamic principles. Private, anonymous, and guided by faith.</p>
     <button class="btn-gold" onclick="goTo('gender')" id="t-start" style="margin:0 auto">Begin Assessment →</button>
-    <p style="text-align:center;font-size:.82rem;color:var(--textm)" id="t-disc">For informational purposes only. Consult family and scholars.</p>
+    <p style="text-align:center;font-size:.75rem;color:var(--textm);margin-top:8px" id="t-disc">For guidance only. Consult family & scholars.</p>
   </div>
 </div>
 
 <!-- GENDER -->
 <div class="screen" id="s-gender">
   <div class="lang-toggle-fixed">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('bn')">বাং</button>
+    <button class="lang-btn active" onclick="setLang('en')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>EN</button>
+    <button class="lang-btn" onclick="setLang('bn')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>বাং</button>
   </div>
   <div class="gender-wrap">
     <div style="text-align:center">
@@ -213,11 +208,11 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 
 <!-- QUIZ -->
 <div class="screen" id="s-quiz">
+  <div class="lang-toggle-fixed">
+    <button class="lang-btn active" onclick="setLang('en')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>EN</button>
+    <button class="lang-btn" onclick="setLang('bn')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>বাং</button>
+  </div>
   <div class="quiz-header">
-    <div class="lang-toggle-fixed">
-      <button class="lang-btn active" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('bn')">বাং</button>
-    </div>
     <div class="progress-bar-wrap"><div class="progress-bar" id="quiz-progress" style="width:5%"></div></div>
     <div class="quiz-nav">
       <div class="section-indicator">
@@ -240,8 +235,8 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 <!-- CODE -->
 <div class="screen" id="s-code">
   <div class="lang-toggle-fixed">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('bn')">বাং</button>
+    <button class="lang-btn active" onclick="setLang('en')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>EN</button>
+    <button class="lang-btn" onclick="setLang('bn')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>বাং</button>
   </div>
   <div class="code-wrap">
     <div style="text-align:center">
@@ -269,8 +264,8 @@ html,body{min-height:100vh;font-family:'Amiri','Noto Serif Bengali',Georgia,seri
 <!-- RESULT -->
 <div class="screen" id="s-result">
   <div class="lang-toggle-fixed">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('bn')">বাং</button>
+    <button class="lang-btn active" onclick="setLang('en')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>EN</button>
+    <button class="lang-btn" onclick="setLang('bn')"><svg class="lang-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>বাং</button>
   </div>
   <div class="result-header header-pattern">
     <h2 id="t-result-title">Compatibility Result</h2>
@@ -314,12 +309,12 @@ let sectionIdx = 0;
 let myCode = '';
 
 const TR = {
-en:{title:'NikahFit',tagline:'Islamic Compatibility Assessment for Marriage',start:'Begin Assessment →',disc:'For informational purposes only. Consult family and scholars.',aboutTitle:'About NikahFit',aboutContent:'NikahFit is an Islamic marriage compatibility assessment tool designed to help Muslims find suitable life partners based on Islamic principles of Kafa\'ah (compatibility). Our comprehensive questionnaire evaluates compatibility across eight key areas: Deen & Religiosity, Character & Personality, Family Values, Financial Status, Education & Career, Relationship Expectations, Lifestyle, and Important Factors.',aboutContent2:'We prioritize Islamic values with 40% weight given to religious practice and beliefs, ensuring that faith remains the foundation of every match. The assessment is completely private - no personal information is stored, only anonymous compatibility codes are used for matching.',aboutContent3:'Remember: This tool provides guidance only. Marriage is a sacred bond in Islam. Always consult your family, perform Istikhara prayer, and seek advice from knowledgeable scholars before making any decisions.',step1:'Step 1 of 3',iam:'I am a...',choose:'Please select to get gender-specific questions',groom:'Groom (Male)',groomsub:'বর / পাত্র',bride:'Bride (Female)',bridesub:'কনে / পাত্রী',gnext:'Continue →',back:'← Back',step2:'Step 2 of 3',yourcode:'Your Match Code',codehint:'Share this code with your partner',mycode:'MY CODE',clickcopy:'Click to copy ✓',sharelink:'Generate Share Link',entercode:"Enter Partner's Code",checkmatch:'Check Compatibility →',note:'Note: Share your code with your partner. They can complete their assessment on any device.',rtitle:'Compatibility Result',rsub:"Based on Islamic Kafa'ah principles",match:'Match',breakdown:'📊 Section Breakdown',insights:'💡 Insights & Suggestions',disclaimer:'⚠️ This tool provides guidance only. Marriage is a major decision — consult your family, perform Istikhara, and seek advice from knowledgeable scholars. May Allah bless your marriage. Ameen.',restart:'Start New Assessment',prev:'Prev',next:'Next',or:'— OR —',invalidCode:'Invalid code! Please check and try again.',
+en:{title:'NikahFit',tagline:'Islamic Compatibility Assessment for Marriage',start:'Begin Assessment →',disc:'For guidance only. Consult family & scholars.',aboutContent:'Assess your marriage compatibility based on Islamic principles. Private, anonymous, and guided by faith.',step1:'Step 1 of 3',iam:'I am a...',choose:'Please select to get gender-specific questions',groom:'Groom (Male)',groomsub:'বর / পাত্র',bride:'Bride (Female)',bridesub:'কনে / পাত্রী',gnext:'Continue →',back:'← Back',step2:'Step 2 of 3',yourcode:'Your Match Code',codehint:'Share this code with your partner',mycode:'MY CODE',clickcopy:'Click to copy ✓',sharelink:'Generate Share Link',entercode:"Enter Partner's Code",checkmatch:'Check Compatibility →',note:'Note: Share your code with your partner. They can complete their assessment on any device.',rtitle:'Compatibility Result',rsub:"Based on Islamic Kafa'ah principles",match:'Match',breakdown:'📊 Section Breakdown',insights:'💡 Insights & Suggestions',disclaimer:'⚠️ This tool provides guidance only. Marriage is a major decision — consult your family, perform Istikhara, and seek advice from knowledgeable scholars. May Allah bless your marriage. Ameen.',restart:'Start New Assessment',prev:'Prev',next:'Next',or:'— OR —',invalidCode:'Invalid code! Please check and try again.',
 secnames:{basic:'Basic Information',deen:'Deen & Religiosity',character:'Character & Personality',family:'Family Values',finance:'Financial',education:'Education & Career',relationship:'Relationship Expectations',lifestyle:'Lifestyle',redflags:'Important Factors'},
 badges:{excellent:{t:'Excellent Match! 🌙',d:'MashaAllah! You have strong compatibility across religious, personal, and lifestyle values. May Allah put barakah in your union.'},good:{t:'Good Match 💛',d:'AlHamdulillah! You share many important values. A few areas need discussion but overall a promising pairing.'},moderate:{t:'Moderate Match',d:'There are some areas of alignment and some differences. Open communication and mutual understanding will be key.'},poor:{t:'Low Compatibility',d:'Significant differences were found in key areas. Please discuss openly and consult a marriage counselor before proceeding.'}},
 excellent:'Excellent',good:'Good',needs:'Needs Work',poor:'Poor'
 },
-bn:{title:'নিকাহফিট',tagline:'বিবাহের জন্য ইসলামিক সামঞ্জস্য মূল্যায়ন',start:'মূল্যায়ন শুরু করুন →',disc:'শুধুমাত্র তথ্যের উদ্দেশ্যে। পরিবার ও আলেমদের পরামর্শ নিন।',aboutTitle:'নিকাহফিট সম্পর্কে',aboutContent:'নিকাহফিট একটি ইসলামিক বিবাহ সামঞ্জস্য মূল্যায়ন টুল যা মুসলমানদেরকে ইসলামিক কুফু (সামঞ্জস্য) নীতির ভিত্তিতে উপযুক্ত জীবনসঙ্গী খুঁজে পেতে সাহায্য করে। আমাদের বিস্তারিত প্রশ্নমালা আটটি মূল ক্ষেত্রে সামঞ্জস্য মূল্যায়ন করে: দ্বীন ও ধর্মীয়তা, চরিত্র ও ব্যক্তিত্ব, পারিবারিক মূল্যবোধ, আর্থিক অবস্থা, শিক্ষা ও পেশা, সম্পর্কের প্রত্যাশা, জীবনধারা এবং গুরুত্বপূর্ণ বিষয়।',aboutContent2:'আমরা ইসলামিক মূল্যবোধকে অগ্রাধিকার দিই, ধর্মীয় অনুশীলন ও বিশ্বাসে ৪০% গুরুত্ব দিয়ে, যাতে প্রতিটি মিলনের ভিত্তি হয় ঈমান। এই মূল্যায়ন সম্পূর্ণ ব্যক্তিগত - কোনো ব্যক্তিগত তথ্য সংরক্ষণ করা হয় না, শুধুমাত্র মিলনের জন্য বেনামী সামঞ্জস্য কোড ব্যবহার করা হয়।',aboutContent3:'মনে রাখবেন: এই টুলটি শুধুমাত্র গাইডলাইন প্রদান করে। বিবাহ ইসলামে একটি পবিত্র বন্ধন। সর্বদা পরিবারের পরামর্শ নিন, ইস্তিখারা নামাজ পড়ুন এবং জ্ঞানী আলেমদের সাথে পরামর্শ করুন।',step1:'ধাপ ১ / ৩',iam:'আমি একজন...',choose:'লিঙ্গ-নির্দিষ্ট প্রশ্নের জন্য নির্বাচন করুন',groom:'বর (পুরুষ)',groomsub:'Groom / Male',bride:'কনে (মহিলা)',bridesub:'Bride / Female',gnext:'পরবর্তী →',back:'← পেছনে',step2:'ধাপ ২ / ৩',yourcode:'আপনার ম্যাচ কোড',codehint:'এই কোডটি আপনার পার্টনারের সাথে শেয়ার করুন',mycode:'আমার কোড',clickcopy:'কপি করতে ক্লিক করুন ✓',sharelink:'শেয়ার লিঙ্ক তৈরি করুন',entercode:'পার্টনারের কোড দিন',checkmatch:'সামঞ্জস্য দেখুন →',note:'দ্রষ্টব্য: আপনার কোডটি পার্টনারের সাথে শেয়ার করুন। তারা যেকোনো ডিভাইসে তাদের মূল্যায়ন সম্পূর্ণ করতে পারেন।',rtitle:'সামঞ্জস্যের ফলাফল',rsub:"ইসলামিক কুফু নীতির ভিত্তিতে",match:'মিল',breakdown:'📊 বিভাগ ভিত্তিক ফলাফল',insights:'💡 পরামর্শ ও পর্যালোচনা',disclaimer:'⚠️ এই টুলটি শুধুমাত্র গাইডলাইন প্রদান করে। বিবাহ একটি গুরুত্বপূর্ণ সিদ্ধান্ত — পরিবারের পরামর্শ নিন, ইস্তিখারা করুন এবং আলেমদের সাথে কথা বলুন। আল্লাহ আপনাদের বিবাহে বরকত দিন। আমীন।',restart:'নতুন মূল্যায়ন শুরু করুন',prev:'পূর্বে',next:'পরবর্তী',or:'— অথবা —',invalidCode:'অবৈধ কোড! পুনরায় চেষ্টা করুন।',
+bn:{title:'নিকাহফিট',tagline:'বিবাহের জন্য ইসলামিক সামঞ্জস্য মূল্যায়ন',start:'মূল্যায়ন শুরু করুন →',disc:'শুধুমাত্র গাইডলাইন। পরিবার ও আলেমদের পরামর্শ নিন।',aboutContent:'ইসলামিক নীতির ভিত্তিতে বিবাহ সামঞ্জস্য মূল্যায়ন করুন। ব্যক্তিগত, বেনামী এবং ঈমান ভিত্তিক।',step1:'ধাপ ১ / ৩',iam:'আমি একজন...',choose:'লিঙ্গ-নির্দিষ্ট প্রশ্নের জন্য নির্বাচন করুন',groom:'বর (পুরুষ)',groomsub:'Groom / Male',bride:'কনে (মহিলা)',bridesub:'Bride / Female',gnext:'পরবর্তী →',back:'← পেছনে',step2:'ধাপ ২ / ৩',yourcode:'আপনার ম্যাচ কোড',codehint:'এই কোডটি আপনার পার্টনারের সাথে শেয়ার করুন',mycode:'আমার কোড',clickcopy:'কপি করতে ক্লিক করুন ✓',sharelink:'শেয়ার লিঙ্ক তৈরি করুন',entercode:'পার্টনারের কোড দিন',checkmatch:'সামঞ্জস্য দেখুন →',note:'দ্রষ্টব্য: আপনার কোডটি পার্টনারের সাথে শেয়ার করুন। তারা যেকোনো ডিভাইসে তাদের মূল্যায়ন সম্পূর্ণ করতে পারেন।',rtitle:'সামঞ্জস্যের ফলাফল',rsub:"ইসলামিক কুফু নীতির ভিত্তিতে",match:'মিল',breakdown:'📊 বিভাগ ভিত্তিক ফলাফল',insights:'💡 পরামর্শ ও পর্যালোচনা',disclaimer:'⚠️ এই টুলটি শুধুমাত্র গাইডলাইন প্রদান করে। বিবাহ একটি গুরুত্বপূর্ণ সিদ্ধান্ত — পরিবারের পরামর্শ নিন, ইস্তিখারা করুন এবং আলেমদের সাথে কথা বলুন। আল্লাহ আপনাদের বিবাহে বরকত দিন। আমীন।',restart:'নতুন মূল্যায়ন শুরু করুন',prev:'পূর্বে',next:'পরবর্তী',or:'— অথবা —',invalidCode:'অবৈধ কোড! পুনরায় চেষ্টা করুন।',
 secnames:{basic:'মৌলিক তথ্য',deen:'দ্বীন ও ধর্মীয়তা',character:'চরিত্র ও ব্যক্তিত্ব',family:'পারিবারিক মূল্যবোধ',finance:'আর্থিক অবস্থা',education:'শিক্ষা ও পেশা',relationship:'সম্পর্কের প্রত্যাশা',lifestyle:'জীবনধারা',redflags:'গুরুত্বপূর্ণ বিষয়'},
 badges:{excellent:{t:'অসাধারণ মিল! 🌙',d:'মাশাআল্লাহ! ধর্মীয়, ব্যক্তিগত এবং জীবনযাত্রার মূল্যবোধে চমৎকার সামঞ্জস্য। আল্লাহ এই মিলনে বরকত দিন।'},good:{t:'ভালো মিল 💛',d:'আলহামদুলিল্লাহ! অনেক গুরুত্বপূর্ণ মূল্যবোধ মিলে যায়। কিছু বিষয় আলোচনা করলে আরও ভালো হবে।'},moderate:{t:'মাঝারি মিল',d:'কিছু বিষয়ে মিল আছে, কিছু বিষয়ে পার্থক্য। খোলামেলা যোগাযোগ ও পারস্পরিক বোঝাপড়া জরুরি।'},poor:{t:'কম সামঞ্জস্য',d:'গুরুত্বপূর্ণ বিষয়গুলোতে উল্লেখযোগ্য পার্থক্য পাওয়া গেছে। এগিয়ে যাওয়ার আগে খোলামেলা আলোচনা করুন।'}},
 excellent:'চমৎকার',good:'ভালো',needs:'উন্নতি দরকার',poor:'কম'
@@ -501,8 +496,7 @@ function applyTranslations(){
   const t=TR[lang];
   const setT=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
   setT('t-title',t.title); setT('t-tagline',t.tagline); setT('t-start',t.start);
-  setT('t-disc',t.disc); setT('t-about-title',t.aboutTitle); setT('t-about-content',t.aboutContent);
-  setT('t-about-content2',t.aboutContent2); setT('t-about-content3',t.aboutContent3);
+  setT('t-disc',t.disc); setT('t-about-content',t.aboutContent);
   setT('t-step1',t.step1); setT('t-iam',t.iam); setT('t-choose',t.choose);
   setT('t-groom',t.groom); setT('t-groom-sub',t.groomsub);
   setT('t-bride',t.bride); setT('t-bride-sub',t.bridesub);
@@ -652,7 +646,18 @@ function finishQuiz(){
     }
   }
   
-  // Submit answers to server
+  // Generate code locally and store in localStorage
+  myCode = generateCode();
+  const userData = {
+    gender,
+    answers: {...answers, gender},
+    created_at: new Date().toISOString()
+  };
+  
+  // Store in localStorage
+  localStorage.setItem('kufumatch_user_' + myCode, JSON.stringify(userData));
+  
+  // Also try to submit to server (for cross-device matching)
   fetch('/api/submit-answers', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -660,17 +665,18 @@ function finishQuiz(){
   })
   .then(res => res.json())
   .then(data => {
-    if(data.error){
-      alert('Error: ' + data.error);
-      return;
+    if(!data.error && data.code){
+      // Use server code if available
+      myCode = data.code;
+      localStorage.setItem('kufumatch_user_' + myCode, JSON.stringify(userData));
     }
-    myCode = data.code;
-    document.getElementById('code-display').textContent = myCode;
-    goTo('code');
   })
   .catch(err => {
-    alert('Failed to submit answers. Please try again.');
-    console.error(err);
+    console.log('Server submission failed, using local storage only:', err);
+  })
+  .finally(() => {
+    document.getElementById('code-display').textContent = myCode;
+    goTo('code');
   });
 }
 
@@ -727,6 +733,26 @@ function checkMatch(){
 
   msgEl.innerHTML=`<div class="msg-box msg-success">${lang==='bn'?'চেক করা হচ্ছে...':'Checking...'}</div>`;
 
+  // First try to get data from localStorage
+  const myData = localStorage.getItem('kufumatch_user_' + myCode);
+  const partnerData = localStorage.getItem('kufumatch_user_' + partnerCode);
+  
+  if(myData && partnerData){
+    // Both users found in localStorage - calculate locally
+    const user1 = JSON.parse(myData);
+    const user2 = JSON.parse(partnerData);
+    
+    if(user1.gender === user2.gender){
+      msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'কোডগুলো ভিন্ন লিঙ্গের হতে হবে':'Codes must be from different genders'}</div>`;
+      return;
+    }
+    
+    const compatibility = calculateCompatibilityLocal(user1.answers, user2.answers);
+    showResultFromServer(compatibility);
+    return;
+  }
+
+  // Fallback to server
   fetch('/api/check-match', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -745,6 +771,166 @@ function checkMatch(){
     msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'ত্রুটি ঘটেছে':'An error occurred'}</div>`;
     console.error(err);
   });
+}
+
+function calculateCompatibilityLocal(answers1, answers2){
+  const sections = ['deen', 'character', 'family', 'finance', 'education', 'relationship', 'lifestyle'];
+  const weights = { deen: 40, character: 20, family: 15, finance: 10, education: 5, relationship: 5, lifestyle: 5 };
+
+  let totalScore = 0;
+  let maxScore = 0;
+  const sectionScores = {};
+
+  sections.forEach(section => {
+    const weight = weights[section];
+    const questions = getQuestionsForSectionLocal(section, answers1, answers2);
+
+    let sectionScore = 0;
+    let sectionMax = 0;
+
+    questions.forEach(q => {
+      const ans1 = answers1[q.id];
+      const ans2 = answers2[q.id];
+
+      if (ans1 && ans2) {
+        const score1 = q.opts.find(o => o.v === ans1)?.sc || 0;
+        const score2 = q.opts.find(o => o.v === ans2)?.sc || 0;
+        const diff = Math.abs(score1 - score2);
+        const compatibilityScore = Math.max(0, 4 - diff); // 0-4 scale
+        sectionScore += compatibilityScore;
+        sectionMax += 4;
+      }
+    });
+
+    const sectionPct = sectionMax > 0 ? (sectionScore / sectionMax) * 100 : 0;
+    sectionScores[section] = Math.round(sectionPct);
+    totalScore += (sectionPct / 100) * weight;
+    maxScore += weight;
+  });
+
+  const overallScore = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
+
+  // Generate insights
+  const insights = generateInsightsLocal(sectionScores, overallScore);
+
+  return {
+    overallScore,
+    sectionScores,
+    insights,
+    badge: getBadgeLocal(overallScore)
+  };
+}
+
+function getQuestionsForSectionLocal(section, answers1, answers2) {
+  const questionTemplates = {
+    deen: [
+      {id:'salah', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1},{v:'e',sc:0}]},
+      {id:'fasting', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'quran', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'dress_m', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'hijab', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'deen_imp', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'spouse_deen', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'haram', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'islamic_know', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]}
+    ],
+    character: [
+      {id:'anger', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'honesty', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'patience', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'decision', opts:[{v:'a',sc:4},{v:'b',sc:4},{v:'c',sc:2},{v:'d',sc:2}]},
+      {id:'forgiveness', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'empathy', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'personality', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:2}]},
+      {id:'ego', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]}
+    ],
+    family: [
+      {id:'fam_sys', opts:[{v:'a',sc:3},{v:'b',sc:3},{v:'c',sc:4},{v:'d',sc:4}]},
+      {id:'inlaws', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'fam_role', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:2}]},
+      {id:'children', opts:[{v:'a',sc:3},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:4}]},
+      {id:'parenting', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:3},{v:'d',sc:1}]},
+      {id:'parents_care', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'family_planning', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]}
+    ],
+    finance: [
+      {id:'income', opts:[{v:'a',sc:1},{v:'b',sc:2},{v:'c',sc:3},{v:'d',sc:4},{v:'e',sc:5}]},
+      {id:'stability', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'expenses', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'savings_m', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'debt_m', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'fam_finance', opts:[{v:'a',sc:1},{v:'b',sc:2},{v:'c',sc:3},{v:'d',sc:4},{v:'e',sc:5}]},
+      {id:'income_exp', opts:[{v:'a',sc:2},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:4}]},
+      {id:'mahr', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:4}]},
+      {id:'savings_f', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]}
+    ],
+    education: [
+      {id:'career_goal', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:2}]},
+      {id:'work_after_f', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:3},{v:'e',sc:4}]},
+      {id:'wife_work_m', opts:[{v:'a',sc:2},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:4}]},
+      {id:'edu_pref', opts:[{v:'a',sc:2},{v:'b',sc:3},{v:'c',sc:3},{v:'d',sc:2}]}
+    ],
+    relationship: [
+      {id:'most_imp', opts:[{v:'a',sc:4},{v:'b',sc:4},{v:'c',sc:2},{v:'d',sc:3},{v:'e',sc:4}]},
+      {id:'conflict_res', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:3},{v:'d',sc:1}]},
+      {id:'communication', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2}]},
+      {id:'romance', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:2}]},
+      {id:'quality_time', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:3},{v:'d',sc:2}]},
+      {id:'respect_spouse', opts:[{v:'a',sc:4},{v:'b',sc:4},{v:'c',sc:2},{v:'d',sc:3}]}
+    ],
+    lifestyle: [
+      {id:'social_media', opts:[{v:'a',sc:1},{v:'b',sc:3},{v:'c',sc:4},{v:'d',sc:4}]},
+      {id:'entertainment', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'travel', opts:[{v:'a',sc:3},{v:'b',sc:4},{v:'c',sc:4},{v:'d',sc:2}]},
+      {id:'routine', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'diet', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:1}]},
+      {id:'finance_mgmt', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2},{v:'d',sc:1}]},
+      {id:'health_lifestyle', opts:[{v:'a',sc:4},{v:'b',sc:3},{v:'c',sc:2}]}
+    ]
+  };
+
+  return questionTemplates[section] || [];
+}
+
+function generateInsightsLocal(sectionScores, overallScore) {
+  const insights = [];
+
+  if (sectionScores.deen < 70) {
+    insights.push({ type: 'warning', text: 'Religious practice differences may need discussion and mutual growth.' });
+  } else {
+    insights.push({ type: 'positive', text: 'Strong alignment in Deen and religious values.' });
+  }
+
+  if (sectionScores.character < 70) {
+    insights.push({ type: 'warning', text: 'Character and personality differences should be addressed early.' });
+  } else {
+    insights.push({ type: 'positive', text: 'Compatible character traits and decision-making styles.' });
+  }
+
+  if (sectionScores.family < 70) {
+    insights.push({ type: 'neutral', text: 'Family values alignment needs open communication.' });
+  }
+
+  if (sectionScores.finance < 70) {
+    insights.push({ type: 'warning', text: 'Financial expectations and stability should be discussed.' });
+  }
+
+  if (overallScore >= 80) {
+    insights.push({ type: 'positive', text: 'Overall excellent compatibility! May Allah bless your union.' });
+  } else if (overallScore >= 60) {
+    insights.push({ type: 'neutral', text: 'Good foundation with some areas for improvement.' });
+  } else {
+    insights.push({ type: 'warning', text: 'Significant differences found. Consider counseling.' });
+  }
+
+  return insights;
+}
+
+function getBadgeLocal(score) {
+  if (score >= 85) return { level: 'excellent', title: 'Excellent Match!', desc: 'MashaAllah! Strong compatibility across all areas.' };
+  if (score >= 70) return { level: 'good', title: 'Good Match', desc: 'AlHamdulillah! Good alignment with minor differences.' };
+  if (score >= 50) return { level: 'moderate', title: 'Moderate Match', desc: 'Some compatibility with areas needing work.' };
+  return { level: 'poor', title: 'Low Compatibility', desc: 'Significant differences in key areas.' };
 }
 
 function showResultFromServer(data){
