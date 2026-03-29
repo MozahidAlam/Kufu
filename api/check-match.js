@@ -24,8 +24,8 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Both codes are required' });
     }
 
-    // Local storage file (use /tmp for Vercel serverless)
-    const dataFile = path.join('/tmp', 'data.json');
+    // Local storage file (use project root for local development)
+    const dataFile = path.join(__dirname, '..', 'data.json');
 
     // Load existing data
     let data = {};
