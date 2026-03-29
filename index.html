@@ -845,8 +845,12 @@ function checkMatch(){
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({code1: myCode, code2: partnerCode})
   })
-  .then(res => res.json())
+  .then(res => {
+    console.log('Response status:', res.status);
+    return res.json();
+  })
   .then(data => {
+    console.log('API Response:', data);
     if(data.error){
       msgEl.innerHTML=`<div class="msg-box msg-error">${data.error}</div>`;
       return;
@@ -856,7 +860,7 @@ function checkMatch(){
   })
   .catch(err => {
     msgEl.innerHTML=`<div class="msg-box msg-error">${lang==='bn'?'ত্রুটি ঘটেছে':'An error occurred'}</div>`;
-    console.error(err);
+    console.error('Fetch error:', err);
   });
 }
 
@@ -1021,11 +1025,13 @@ function getBadgeLocal(score) {
 }
 
 function showResultFromServer(data){
+  console.log('showResultFromServer called with:', data);
   const t=TR[lang];
   const overall = data.overallScore;
   const secScores = data.sectionScores;
   const insights = data.insights;
   const badge = data.badge;
+  console.log('Parsed values:', { overall, secScores, insights, badge });
 
   goTo('result');
 
